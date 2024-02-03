@@ -1,0 +1,74 @@
+.banner-image {
+    position: relative;
+}
+
+.banner__media img {
+    max-width: 100%;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.banner__content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    display: flex;
+}
+
+.background-media-text--left {
+    width: 100%;
+}
+
+ul.list-style {
+    margin: 0;
+    padding: 0;
+    font-family: 'Montserrat',sans-serif;
+    font-weight: 500;
+}
+
+.banner_liquid {
+    margin: 1rem 0 2rem;
+}
+
+.background-media-text__banner {
+    max-width: 770px;
+}
+
+.banner__media {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    padding-bottom: 75vh;
+}
+
+.banner__media img {
+    max-width: 100%;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+@media (min-width:769px) {
+    .banner__content p.h1 {
+        font-size: 48px;
+    }
+}
+
+@media (max-width: 768px) {
+    .banner__content .h1,.background-media-text__subtext {
+        text-align: center;
+    }
+
+    .banner__media {
+        padding-bottom: 75vh;
+    }
+}
