@@ -1,0 +1,200 @@
+<link rel="stylesheet" href="{{ 'image-banner.css' | asset_url }}">
+<div class="banner-image">
+    {% if section.settings.image != blank %}
+        <div class="banner__media">
+            <div class="media">
+                {%- liquid
+                    assign image_height = section.settings.image.width | divided_by: section.settings.image.aspect_ratio
+                    assign sizes = '(min-width: 750px) 50vw, 100vw'
+                -%}
+                {{
+                section.settings.image
+                | image_url: width: 3840
+                | image_tag:
+                loading: 'lazy',
+                width: section.settings.image.width,
+                height: image_height,
+                class: image_class,
+                sizes: sizes,
+                widths: '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840'
+                }}
+            </div>
+        </div>
+    {% endif %}
+    {%- if section.settings.subtitle != blank or section.settings.title != blank or section.settings.text != blank -%}
+        <div class="banner__content">
+            <div class="background-media-text--{{ section.settings.layout }}">
+                <div class="page-width">
+                    <div class="animation-cropper">
+                        <div class="animation-contents">
+                            <div class="background-media-text__banner">
+                                {%- if section.settings.subtitle -%}
+                                    <p class="h5">{{ section.settings.subtitle }}</p>
+                                {%- endif -%}
+                                {%- if section.settings.title != blank -%}
+                                    <p class="h1">{{ section.settings.title | escape }}</p>
+                                {%- endif -%}
+                                {%- if section.settings.text != blank -%}
+                                    <div class="rte background-media-text__subtext">{{ section.settings.text }}</div>
+                                {%- endif -%}
+                                {% if section.settings.liquid != blank %}
+                                    <div class="banner_liquid">
+                                        {{ section.settings.liquid }}
+                                    </div>
+                                {% endif %}
+                                {%- if section.settings.button_label != blank and section.settings.button_link != blank -%}
+                                    <a href="{{ section.settings.button_link }}" class="btn btn-sm-100">
+                                        {{ section.settings.button_label }}
+                                    </a>
+                                {%- endif -%}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {%- endif -%}
+</div>
+
+{% schema %}
+{
+"name": "Image Banner",
+"class": "index-section--flush",
+"settings": [
+{
+"type": "text",
+"id": "subtitle",
+"label": "Subheading",
+"default": "Impressive"
+},
+{
+"type": "text",
+"id": "title",
+"label": "Heading",
+"default": "Large image with text box"
+},
+{
+"type": "richtext",
+"id": "text",
+"label": "Text",
+"default": "<p>Pair large text with a full-width image to draw attention to an important detail of your brand or product line.</p>"
+},
+{
+"type": "liquid",
+"id": "liquid",
+"label": "Liquid"
+},
+{
+"type": "text",
+"id": "button_label",
+"label": "Button label"
+},
+{
+"type": "url",
+"id": "button_link",
+"label": "Button link"
+},
+{
+"type": "image_picker",
+"id": "image",
+"label": "Image"
+},
+{
+"type": "select",
+"id": "focal_point",
+"label": "Image focal point",
+"info": "Used to keep the subject of your photo in view.",
+"default": "center",
+"options": [
+{
+"value": "20% 0",
+"label": "Top left"
+},
+{
+"value": "top",
+"label": "Top"
+},
+{
+"value": "80% 0",
+"label": "Top right"
+},
+{
+"value": "20% 50%",
+"label": "Left"
+},
+{
+"value": "center",
+"label": "Middle"
+},
+{
+"value": "80% 50%",
+"label": "Right"
+},
+{
+"value": "20% 100%",
+"label": "Bottom left"
+},
+{
+"value": "bottom",
+"label": "Bottom"
+},
+{
+"value": "80% 100%",
+"label": "Bottom right"
+}
+]
+},
+{
+"type": "color",
+"id": "color_border",
+"label": "Image color",
+"info": "Used for mobile border",
+"default": "#f4f4f4"
+},
+{
+"type": "select",
+"id": "layout",
+"label": "Layout",
+"default": "left",
+"options": [
+{
+"value": "left",
+"label": "Text on left"
+},
+{
+"value": "right",
+"label": "Text on right"
+}
+]
+},
+{
+"type": "range",
+"id": "height",
+"label": "Section height",
+"default": 550,
+"min": 450,
+"max": 750,
+"step": 100,
+"unit": "px"
+},
+{
+"type": "checkbox",
+"id": "framed",
+"label": "Add frame",
+"default": false
+},
+{
+"type": "checkbox",
+"id": "parallax",
+"label": "Enable parallax",
+"default": true
+}
+],
+"presets": [
+{
+"name": "Image Banner",
+"category": "Image"
+}
+]
+}
+{% endschema %}

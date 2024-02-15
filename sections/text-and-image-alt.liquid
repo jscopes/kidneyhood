@@ -1,0 +1,170 @@
+{%- if section.settings.divider -%}<div class="section--divider">{%- endif -%}
+
+    <div
+            id="CollectionSection-{{ section.id }}"
+            data-section-id="{{ section.id }}"
+            data-section-type="collection-template">
+        {%- if section.settings.title != blank -%}
+            <div class="page-width">
+                <div class="section-header{% if section.settings.view_all %}{% unless settings.type_headers_align_text %} section-header--with-link{% endunless %}{% endif %}">
+                    <h2 class="section-header__title text-center">
+                        {{ section.settings.title }}
+                    </h2>
+                    {% if section.settings.subheading != blank %}
+                        <div class="subheading text-center">{{ section.settings.subheading }}</div>
+                    {% endif %}
+                </div>
+            </div>
+        {%- endif -%}
+        <div class="page-width">
+            {%- capture image_layout -%}
+                <div class="feature-row-alt__item">
+                    <div style="margin: 0 auto; max-width: {{ section.settings.image_width }}px;">
+                        {%- if section.settings.image != blank -%}
+                            <div class="image-wrap" style="height: 0; padding-bottom: {{ 100 | divided_by: section.settings.image.aspect_ratio }}%;">
+                                {%- assign img_url = section.settings.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+                                <img class="feature-row-alt__image lazyload"
+                                     data-src="{{ img_url }}"
+                                     data-widths="[180, 360, 540, 720, 900, 1080]"
+                                     data-aspectratio="{{ section.settings.image.aspect_ratio }}"
+                                     data-sizes="auto"
+                                     alt="{{ section.settings.image.alt }}">
+                            </div>
+                        {%- else -%}
+                            <div class="image-wrap">
+                                {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                            </div>
+                        {%- endif -%}
+                    </div>
+                </div>
+            {%- endcapture -%}
+
+            <div class="feature-row-alt" data-aos style="display: flex;">
+                {%- if section.settings.layout == 'left' -%}
+                    {{ image_layout }}
+                {%- endif -%}
+
+                <div class="feature-row-alt__item feature-row-alt__text feature-row-alt__text--{{ section.settings.layout }}">
+                    {%- if section.settings.subtitle != blank -%}
+                        <p class="h5">{{ section.settings.subtitle }}</p>
+                    {%- endif -%}
+                    {%- if section.settings.text != blank -%}
+                        <div class="rte featured-row-alt__subtext">{{ section.settings.text }}</div>
+                    {%- endif -%}
+                </div>
+
+                {%- if section.settings.layout == 'right' -%}
+                    {{ image_layout }}
+                {%- endif -%}
+            </div>
+        </div>
+
+        {%- if section.settings.button_label != blank and section.settings.button_link != blank %}
+            <div class="page-width">
+                <div class="featured-row-alt__button-row text-center">
+                    {%- if section.settings.button_kltarget != blank -%}
+                        <a href="{{ section.settings.button_link }}" class="btn {{ section.settings.button_class }}" data-kl-target="{{ section.settings.button_kltarget }}">
+                            {{ section.settings.button_label }}
+                        </a>
+                    {%- else -%}
+                        <a href="{{ section.settings.button_link }}" class="btn {{ section.settings.button_class }}">
+                            {{ section.settings.button_label }}
+                        </a>
+                    {%- endif -%}
+                </div>
+            </div>
+        {% endif -%}
+    </div>
+
+    {%- if section.settings.divider -%}</div>{%- endif -%}
+
+{% schema %}
+{
+"name": "Image with text (alt)",
+"class": "index-section",
+"settings": [
+{
+"type": "text",
+"id": "title",
+"label": "Heading",
+"default": "Text and Image Title"
+},
+{
+"type": "image_picker",
+"id": "image",
+"label": "Image"
+},
+{
+"type": "range",
+"id": "image_width",
+"label": "Image width",
+"default": 500,
+"min": 100,
+"max": 500,
+"step": 10,
+"unit": "px"
+},
+{
+"type": "text",
+"id": "subtitle",
+"label": "Subheading",
+"default": "Improved"
+},
+{
+"type": "richtext",
+"id": "text",
+"label": "Text",
+"default": "<p>Pair large text with an image to tell a story, explain a detail about your product, or describe a new promotion.</p>"
+},
+{
+"type": "text",
+"id": "button_label",
+"label": "Button label",
+"default": "Optional button"
+},
+{
+"type": "url",
+"id": "button_link",
+"label": "Button link"
+},
+{
+"type": "text",
+"id": "button_class",
+"label": "Button CSS class"
+},
+{
+"type": "text",
+"id": "button_kltarget",
+"label": "Button Klaviyo Target"
+},
+{
+"type": "select",
+"id": "layout",
+"label": "Layout",
+"default": "left",
+"options": [
+{
+"value": "left",
+"label": "Image on left"
+},
+{
+"value": "right",
+"label": "Image on right"
+}
+]
+},
+{
+"type": "checkbox",
+"id": "divider",
+"label": "Show section divider",
+"default": false
+}
+],
+"presets": [
+{
+"name": "Image with text (alt)",
+"category": "Image"
+}
+]
+}
+{% endschema %}
