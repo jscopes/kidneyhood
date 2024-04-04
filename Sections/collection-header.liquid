@@ -1,0 +1,227 @@
+{%- assign disable_sticky_header = false -%}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+{%- if collection.url == '/collections/all' -%}
+    <div class="moneyback-block" style="background: {{ section.settings.moneybackbg }};">
+        <div class="moneybackdiv moneybackdivimage">
+            <img src="{{ section.settings.moneybacklogos | img_url: 'original' }}" alt="{{ section.settings.moneytitle }}" />
+        </div>
+        <div class="moneybackdiv">
+            <h2>{{ section.settings.moneytitle }}</h2>
+            {{ section.settings.moneyBackpoint }}
+        </div>
+    </div>
+{%- endif -%}
+{%- if section.settings.enable -%}
+    {%- if section.settings.collection_image_enable and collection.image -%}
+        <div
+                id="CollectionHeaderSection"
+                data-section-id="{{ section.id }}"
+                data-section-type="collection-header"
+                {% if section.settings.parallax %}data-parallax="true"{% endif %}>
+
+            <div class="collection-hero">
+                {%- if section.settings.parallax -%}
+                    <div class="parallax-container">
+                        <div
+                                class="parallax-image collection-hero__image lazyload"
+                                data-bgset="{% render 'bgset', image: collection.image %}"
+                                data-sizes="auto">
+                        </div>
+                    </div>
+                {%- else -%}
+                    {%- assign img_url = collection.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+
+                    <img class="collection-hero__image image-fit lazyload"
+                         src=""
+                         data-src="{{ img_url }}"
+                         data-aspectratio="{{ collection.image.aspect_ratio }}"
+                         data-sizes="auto"
+                         data-parent-fit="cover"
+                         alt="{{ collection.image.alt | escape }}">
+                    <noscript>
+                        <img class="collection-hero__image image-fit"
+                             src="{{ collection.image | img_url: '1400x' }}"
+                             alt="{{ collection.image.alt | escape }}">
+                    </noscript>
+                {%- endif -%}
+
+                <div class="collection-hero__content">
+                    <div class="page-width">
+                        <header class="section-header section-header--hero">
+                            <div class="section-header__shadow">
+                                {%- render 'breadcrumbs' -%}
+                                <h1 class="section-header__title">
+                                    {{ collection.title }}
+                                </h1>
+                            </div>
+                        </header>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {%- else -%}
+        {%- assign disable_sticky_header = true -%}
+        <div class="page-width page-content page-content--top">
+            <header class="section-header section-header--flush mcs-collection-header">
+                {%- render 'breadcrumbs' -%}
+                <h1 class="section-header__title">
+                    {{ collection.title }}
+                </h1>
+                <p>{{ collection.description }}</p>
+            </header>
+        </div>
+    {%- endif -%}
+{% else %}
+    {%- assign disable_sticky_header = true -%}
+{%- endif -%}
+
+{%- if disable_sticky_header -%}
+    {% comment %}
+      Div to trigger theme.CollectionHeader JS
+    {% endcomment %}
+    <div
+            id="CollectionHeaderSection"
+            data-section-id="{{ section.id }}"
+            data-section-type="collection-header">
+    </div>
+{%- endif -%}
+
+{%- if collection.url == '/collections/books' -%}
+    <div class="page-width">
+        <div class="collection-grid__wrapper">
+            <div
+                    class="grid grid--uniform grid--collection{% if section.settings.mobile_flush_grid %} small--grid--flush{% endif %}"{% unless section.settings.enable_collection_count %} data-scroll-to{% endunless %}>
+                {%- liquid
+                    assign per_row = 3
+                    assign grid_item_width = 'small--one-half medium-up--one-quarter'
+
+                    case per_row
+                        when 2
+                            assign grid_item_width = 'medium-up--one-half'
+                        when 3
+                            assign grid_item_width = 'small--one-half medium-up--one-third'
+                        when 4
+                            assign grid_item_width = 'small--one-half medium-up--one-quarter'
+                        when 5
+                            assign grid_item_width = 'small--one-half medium-up--one-fifth'
+                    endcase
+                -%}
+
+                {%- for product in collection.products -%}
+                    {%- render 'product-grid-item', product: product, grid_item_width: grid_item_width -%}
+                {%- else -%}
+                    <div class="grid__item">
+                        <p>{{ 'collections.general.no_matches' | t }}</p>
+                    </div>
+                {%- endfor -%}
+            </div>
+        </div>
+    </div>
+{%- endif -%}
+
+{% schema %}
+{
+"name": "Collection header",
+"settings": [
+{
+"type": "checkbox",
+"id": "enable",
+"label": "Enable header",
+"default": true
+},
+{
+"type": "checkbox",
+"id": "collection_image_enable",
+"label": "Show collection image",
+"default": true
+},
+{
+"type": "checkbox",
+"id": "parallax",
+"label": "Parallax image",
+"default": true
+},
+{
+"type": "header",
+"content": "Money Back Guarantee"
+},
+{
+"type": "color",
+"id": "moneybackbg",
+"label": "moneyback bg color"
+},
+{
+"type": "image_picker",
+"id": "moneybacklogos",
+"label": "Money Back logos"
+},
+{
+"type": "text",
+"id": "moneytitle",
+"label": "Money Back title"
+},
+{
+"type": "textarea",
+"id": "moneyBackpoint",
+"label": "Money Back Points"
+}
+]
+}
+{% endschema %}
+<style>
+    .moneyback-block {
+        padding: 50px 10%;
+        display: flex;
+        padding-bottom:30px;
+    }
+    .moneyback-block .moneybackdiv{
+        width:50%;
+        color:#fff;
+    }
+    .moneybackdivimage{
+        text-align:center;
+    }
+    .moneyback-block .moneybackdiv h2{
+        font-size: 22px;
+        line-height: 30px;
+        font-weight: 600;
+        color: #fff;
+
+    }
+    .moneyback-block .moneybackdiv ul{
+        margin-top:30px;
+        margin-left: 22px;
+        list-style-type:none;
+    }
+    .moneyback-block .moneybackdiv ul li{
+        margin-bottom:10px;
+        position:relative;
+        padding-left:10px;
+        font-size: 17px;
+    }
+    .moneyback-block .moneybackdiv ul li span{
+        position: absolute;
+        left: -20px;
+        top: 4px;
+        bottom: 0px;
+    }
+    .moneyback-block .moneybackdiv ul li:before{
+        /*   content: "\f0a4";
+       font-family: FontAwesome;
+      display: inline-block;
+      /* same as padding-left set on li */
+        /* width: 1.3em; /* same as padding-left set on li */
+
+    }
+    @media screen and (max-width: 768px) {
+        .moneyback-block{
+            display:block;
+        }
+        .moneyback-block .moneybackdiv{
+            width:100%;
+        }
+        .moneyback-block .moneybackdiv h2 {
+            margin-top: 25px;
+        }
+    }
+</style>
