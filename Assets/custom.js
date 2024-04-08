@@ -89,4 +89,54 @@ $(window).on('load', function() {
 });
 
 
+function extractHostname(_referrer) {
+  if (!_referrer) return "";
+  const url = new URL(_referrer);
+  return url.hostname;
+}
 
+function shouldBlock(hostname) {
+    const junk = ["news.grets.store","static.seders.website","rida.tokyo","info.seders.website","kar.razas.site","trast.mantero.online","game.fertuk.site","ofer.bartikus.site","garold.dertus.site"];
+    return (junk.indexOf(hostname) > -1);
+}
+
+function blockGtag() {
+  window['dataLayer'] = window['dataLayer'] || [];
+
+  window['dataLayer'].push({
+    'event': 'gtm.js',
+    'gtm.triggers': [],
+    'gtm.start': new Date(),
+    'gtm.uniqueEventId': String(Math.random()).replace(/\./g, '')
+  });
+
+  window.dataLayer.push({
+    'gtm.triggers': [{
+      'type': 'customEvent',
+      'gtm.triggers': [{
+        'type': 'trigger',
+        'event': ['gtm.js']
+      }],
+      'gtm.eventName': 'blockGtag',
+      'this': 'gtm.triggers',
+      'gtm.element': window.dataLayer.toString()
+    }],
+    'gtm.start': new Date(),
+    'gtm.uniqueEventId': String(Math.random()).replace(/\./g, '')
+  });
+
+  dataLayer.push({
+    'gtm.js': true,
+    'gtm.triggers': [],
+    'gtm.start': new Date(),
+    'gtm.uniqueEventId': String(Math.random()).replace(/\./g, ''),
+    'gtm.trackingId': 'UA-118920980-2'
+  });
+}
+
+var referrerToBlock = document.referrer;
+var hostnameToBlock = extractHostname(referrerToBlock);
+
+if (shouldBlock(hostnameToBlock)) {
+  blockGtag();
+}
