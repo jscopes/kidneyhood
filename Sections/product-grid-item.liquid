@@ -1,4 +1,8 @@
 {%- liquid
+    unless truncate_long_names
+        assign truncate_long_names = false
+    endunless
+
     unless grid_item_width
         assign grid_item_width = 'medium-up--one-quarter small--one-half'
     endunless
@@ -138,7 +142,7 @@
             </div>
 
             <div class="grid-product__meta">
-                <div class="grid-product__title grid-product__title--{{ settings.type_product_style }}">{{ product.title }}</div>
+                <div class="grid-product__title grid-product__title--{{ settings.type_product_style }} {% if truncate_long_names %}line-clamp{% endif %}">{{ product.title }}</div>
                 {%- if settings.vendor_enable -%}
                     <div class="grid-product__vendor">{{ product.vendor }}</div>
                 {%- endif -%}
