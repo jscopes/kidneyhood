@@ -1,0 +1,131 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<div class="guaranteeContent-block" style="background: {{ section.settings.guaranteeBgColor }};" class="{% if section.settings.guaranteeImage %} has-image{% endif %}">
+<div class="guaranteeContent-block-inner" style="background: {{ section.settings.guaranteeInnerBgColor }};">
+    {%- if section.settings.guaranteeImage -%}
+        <div class="guaranteeContentdiv guaranteeContentdivimage">
+            <img src="{{ section.settings.guaranteeImage | img_url: 'original' }}" alt="{{ section.settings.guaranteeTitle }}" />
+        </div>
+    {%- endif -%}
+    <div class="guaranteeContentdiv">
+        <div class="section-header text-{{ section.settings.align_text }}">
+            <h2>{{ section.settings.guaranteeTitle }}</h2>
+        </div>
+        <div class="section-content">
+            {{ section.settings.guaranteeDescription }}
+        </div>
+    </div>
+</div>
+</div>
+
+
+{% schema %}
+{
+"name": "Guarantee Content",
+"settings": [
+{
+"type": "header",
+"content": "Money Back Guarantee"
+},
+{
+"type": "color",
+"id": "guaranteeBgColor",
+"label": "Guarantee BG Color"
+},
+{
+"type": "color",
+"id": "guaranteeInnerBgColor",
+"label": "Guarantee Inner BG Color"
+},
+{
+"type": "image_picker",
+"id": "guaranteeImage",
+"label": "Guarantee Image"
+},
+{
+"type": "text",
+"id": "guaranteeTitle",
+"label": "Guarantee title"
+},
+{
+"type": "textarea",
+"id": "guaranteeDescription",
+"label": "Guarantee Description"
+},
+{
+"type": "select",
+"id": "align_text",
+"label": "Alignment",
+"default": "left",
+"options": [
+{
+"value": "left",
+"label": "Left"
+},
+{
+"value": "center",
+"label": "Centered"
+},
+{
+"value": "right",
+"label": "Right"
+}
+]
+}
+]
+}
+{% endschema %}
+<style>
+    .guaranteeContent-block {
+        padding: 25px 5%;
+        display: flex;
+    }
+    .guaranteeContent-block-inner {
+        padding: 25px 5%;
+        display: flex;
+    }
+    .guaranteeContent-block .guaranteeContentdiv {
+    }
+    .guaranteeContent-block .has-image .guaranteeContentdiv {
+        width:50%;
+    }
+    .guaranteeContentdivimage{
+        text-align:center;
+    }
+    .guaranteeContent-block .guaranteeContentdiv h2 {
+        font-size: 22px;
+        line-height: 30px;
+        font-weight: 600;
+    }
+    .guaranteeContent-block .guaranteeContentdiv ul {
+        margin-top:30px;
+        margin-left: 22px;
+        list-style-type:none;
+    }
+    .guaranteeContent-block .guaranteeContentdiv ul li {
+        margin-bottom:10px;
+        position:relative;
+        padding-left:10px;
+        font-size: 17px;
+    }
+    .guaranteeContent-block .guaranteeContentdiv ul li span {
+        position: absolute;
+        left: -20px;
+        top: 0px;
+        bottom: 0px;
+    }
+    .guaranteeContent-block .guaranteeContentdiv ul li span fa:before {
+        font-size: 19px;
+    }
+    @media screen and (max-width: 768px) {
+        .guaranteeContent-block{
+            display:block;
+        }
+        .guaranteeContent-block .guaranteeContentdiv {
+            width:100%;
+        }
+        .guaranteeContent-block .guaranteeContentdiv h2 {
+            margin-top: 25px;
+        }
+    }
+</style>

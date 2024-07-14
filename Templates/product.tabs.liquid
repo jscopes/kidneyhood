@@ -1,0 +1,105 @@
+{% section 'product-template' %}
+
+<ul class="shopify-tabs">
+    <li class="current" data-tab="tab-description">Description</li>
+    <li data-tab="tab-specs">Product Specs</li>
+    <li data-tab="tab-delivery">Delivery</li>
+    <li data-tab="tab-returns">Returns</li>
+</ul>
+<div id="tab-description" class="shopify-tab-content current">
+    Description tab content
+</div>
+<div id="tab-specs" class="shopify-tab-content">
+    Specs tab content
+</div>
+<div id="tab-delivery" class="shopify-tab-content">
+    Delivery tab content
+</div>
+<div id="tab-returns" class="shopify-tab-content">
+    Returns tab content
+</div>
+
+{% section 'product-story-sections' %}
+{% section 'related-products' %}
+{% section 'product-recommendations' %}
+
+
+
+{% if collection %}
+    <div class="text-center page-content page-content--bottom">
+        <a href="{% if collection.handle == 'frontpage' %}/{% else %}{{ collection.url }}{% endif %}" class="btn btn--small return-link">
+            <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon--wide icon-arrow-left" viewBox="0 0 50 15"><path d="M50 5.38v4.25H15V15L0 7.5 15 0v5.38z"/></svg> {{ 'products.general.collection_return' | t: collection: collection.title }}
+        </a>
+    </div>
+{% endif %}
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('ul.shopify-tabs > li').click(function(){
+            var tab_id = $(this).attr('data-tab');
+
+            $(this).parent().find('li').removeClass('current');
+            $('.shopify-tab-content').removeClass('current');
+
+            $(this).addClass('current');
+            $("#"+tab_id).addClass('current');
+        })
+    })
+</script>
+
+<style>
+    ul.shopify-tabs {
+        margin: 0px;
+        padding: 0px;
+        list-style: none;
+    }
+    ul.shopify-tabs > li{
+        background: none;
+        color: #333;
+        display: inline-block;
+        padding: 10px 15px;
+        cursor: pointer;
+    }
+    ul.shopify-tabs > li.current{
+        background: #f0f0f0;
+        color: #333;
+    }
+    .shopify-tab-content{
+        display: none;
+        background: #f0f0f0;
+        padding: 15px;
+    }
+    .shopify-tab-content.current{
+        display: block;
+    }
+</style>
+
+
+<script type="text/javascript">
+    var _learnq = _learnq || [];
+
+    var item = {
+        Name: {{ product.title|json }},
+        ProductID: {{ product.id|json }},
+        Categories: {{ product.collections|map:'title'|json }},
+        ImageURL: "https:{{ product.featured_image.src|img_url:'grande' }}",
+        URL: "{{ shop.secure_url }}{{ product.url }}",
+        Brand: {{ product.vendor|json }},
+        Price: {{ product.price|money|json }},
+        CompareAtPrice: {{ product.compare_at_price_max|money|json }}
+    };
+
+    _learnq.push(['track', 'Viewed Product', item]);
+    _learnq.push(['trackViewedItem', {
+        Title: item.Name,
+        ItemId: item.ProductID,
+        Categories: item.Categories,
+        ImageUrl: item.ImageURL,
+        Url: item.URL,
+        Metadata: {
+            Brand: item.Brand,
+            Price: item.Price,
+            CompareAtPrice: item.CompareAtPrice
+        }
+    }]);
+</script>

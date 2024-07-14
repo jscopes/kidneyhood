@@ -24,6 +24,8 @@
         float: right;
         font-size: 28px;
         font-weight: bold;
+        position: relative;
+        z-index: 99;
     }
     .signup-modal-close:hover,
     .signup-modal-close:focus {
@@ -45,33 +47,43 @@
     }
 </style>
 
-<div id="SignUpModal" class="signup-modal">
+<div id="SignUpModal" data-formtarget="Legacy 2023 Form" class="signup-modal">
     <div class="signup-modal-content">
-        <span class="signup-modal-close">&times;</span>
+        <a class="signup-modal-close jsCloseModal" href="#">&times;</a>
         <div class="klaviyo-form-UqSnqN"></div>
     </div>
 </div>
 
+<div id="SignUpModal-RScTm4" data-formtarget="2024 Annual Review" class="signup-modal">
+    <div class="signup-modal-content">
+        <a class="signup-modal-close jsCloseModal" href="#">&times;</a>
+        <div class="klaviyo-form-RScTm4"></div>
+    </div>
+</div>
+
+<div id="SignUpModal-X59Mbv" data-formtarget="Early Study Data" class="signup-modal">
+    <div class="signup-modal-content">
+        <a class="signup-modal-close jsCloseModal" href="#">&times;</a>
+        <div class="klaviyo-form-X59Mbv"></div>
+    </div>
+</div>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 <script>
-    var modal = document.getElementById("SignUpModal");
-    //var btn = document.getElementById("SignUp-btn");
-    //  var btn = document.getElementsByClassName("SignUp-btn");
-    var span = document.getElementsByClassName("signup-modal-close")[0];
-    // btn.onclick = function() {
-    //   modal.style.display = "block";
-    // }
-    span.onclick = function() {
-        modal.style.display = "none";
-    }
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
     $(document).ready(function() {
-        $('.SignUp-btn').click(function() {
-            $('#SignUpModal').css('display','block');
+        $(document).on('click.modalClose', '.jsCloseModal', function(e){
+            e.preventDefault();
+            $(this).closest('.signup-modal').css('display','none');
+        })
+
+        $('.SignUp-btn').click(function(e) {
+            e.preventDefault();
+            if ($(this).attr('data-kl-target')) {
+                $('#SignUpModal-'+$(this).attr('data-kl-target')).css('display','block');
+            } else {
+                $('#SignUpModal').css('display','block');
+            }
         });
     });
 </script>

@@ -1,0 +1,271 @@
+{%- if section.settings.divider -%}<div class="section--divider">{%- endif -%}
+
+    <div
+            id="CollectionSection-{{ section.id }}"
+            data-section-id="{{ section.id }}"
+            data-section-type="collection-template">
+
+
+        <div class="row-full gray">
+            <div class="page-width textImageBanner-block" style="background: {{ section.settings.outerBgColor }}; padding: {{ section.settings.outerBgPadding }}px;" >
+
+                {%- if section.settings.title != blank -%}
+                        <div class="section-header{% if section.settings.view_all %}{% unless settings.type_headers_align_text %} section-header--with-link{% endunless %}{% endif %}">
+                            <h2 class="section-header__title text-center">
+                                {{ section.settings.title }}
+                            </h2>
+                            {% if section.settings.subheading != blank %}
+                                <div class="subheading text-center">{{ section.settings.subheading }}</div>
+                            {% endif %}
+                        </div>
+                {%- endif -%}
+                {%- capture image_layout -%}
+                    <div class="textImageBanner-image">
+                        <div style="margin: 0 auto; max-width: {{ section.settings.image_width }}px;">
+                            {%- if section.settings.image != blank -%}
+                                <div class="image-wrap" style="height: 0; padding-bottom: {{ 100 | divided_by: section.settings.image.aspect_ratio }}%;">
+                                    {%- assign img_url = section.settings.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+                                    <img class="text-image-banner__image lazyload"
+                                         role="presentation"
+                                         data-src="{{ img_url }}"
+                                         data-widths="[180, 360, 540, 720, 900, 1080]"
+                                         data-aspectratio="{{ section.settings.image.aspect_ratio }}"
+                                         data-sizes="auto"
+                                         alt="{{ section.settings.image.alt }}">
+                                </div>
+                            {%- else -%}
+                                <div class="image-wrap">
+                                    {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                                </div>
+                            {%- endif -%}
+                        </div>
+                    </div>
+                {%- endcapture -%}
+
+                <div class="textImageBanner-content">
+                    <div class="textImageBanner-inner" style="background: {{ section.settings.innerBgColor }}; border-radius: {{ section.settings.innerBorderRadius }}px;">
+                        {%- if section.settings.layout == 'left' -%}
+                            {{ image_layout }}
+                        {%- endif -%}
+
+                        <div class="textImageBanner-text">
+                            <div style="color: {{ section.settings.textColor }}; padding: {{ section.settings.innerBgPaddingY }}px {{ section.settings.innerBgPaddingX }}px;" >
+
+                            {%- if section.settings.subtitle != blank -%}
+                                <div class="subheading text-center">{{ section.settings.subtitle }}</div>
+                            {%- endif -%}
+                            {%- if section.settings.text != blank -%}
+                                <div class="rte textcontent">{{ section.settings.text }}</div>
+                            {%- endif -%}
+                            </div>
+                        </div>
+
+                        {%- if section.settings.layout == 'right' -%}
+                            {{ image_layout }}
+                        {%- endif -%}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    {%- if section.settings.divider -%}</div>{%- endif -%}
+
+{% schema %}
+{
+"name": "Text and Image Banner",
+"class": "index-section",
+"settings": [
+{
+"type": "text",
+"id": "title",
+"label": "Heading",
+"default": "Text and Image Title"
+},
+{
+"type": "color",
+"id": "textColor",
+"label": "Text Color"
+},
+{
+"type": "color",
+"id": "outerBgColor",
+"label": "Outer BG Color"
+},
+{
+"type": "range",
+"id": "outerBgPadding",
+"label": "Outer Padding",
+"default": 5,
+"min": 0,
+"max": 30,
+"step": 1,
+"unit": "px"
+},
+{
+"type": "color",
+"id": "innerBgColor",
+"label": "Inner BG Color"
+},
+{
+"type": "range",
+"id": "innerBgPaddingX",
+"label": "Inner Padding X-Axis",
+"default": 5,
+"min": 0,
+"max": 30,
+"step": 1,
+"unit": "px"
+},
+{
+"type": "range",
+"id": "innerBgPaddingY",
+"label": "Inner Padding Y-Axis",
+"default": 5,
+"min": 0,
+"max": 30,
+"step": 1,
+"unit": "px"
+},
+{
+"type": "range",
+"id": "innerBorderRadius",
+"label": "Inner Border Radius",
+"default": 0,
+"min": 0,
+"max": 30,
+"step": 1,
+"unit": "px"
+},
+
+{
+"type": "image_picker",
+"id": "image",
+"label": "Image"
+},
+{
+"type": "range",
+"id": "image_width",
+"label": "Image width",
+"default": 500,
+"min": 100,
+"max": 500,
+"step": 10,
+"unit": "px"
+},
+{
+"type": "text",
+"id": "subtitle",
+"label": "Subheading",
+"default": "Improved"
+},
+{
+"type": "richtext",
+"id": "text",
+"label": "Text",
+"default": "<p>Pair large text with an image to tell a story, explain a detail about your product, or describe a new promotion.</p>"
+},
+{
+"type": "select",
+"id": "layout",
+"label": "Layout",
+"default": "left",
+"options": [
+{
+"value": "left",
+"label": "Image on left"
+},
+{
+"value": "right",
+"label": "Image on right"
+}
+]
+},
+{
+"type": "checkbox",
+"id": "divider",
+"label": "Show section divider",
+"default": false
+}
+],
+"presets": [
+{
+"name": "Image with text (alt)",
+"category": "Image"
+}
+]
+}
+{% endschema %}
+
+<style>
+    .textImageBanner-blockX .subheading {
+        font-weight: bold;
+        font-size: 1.2rem;
+        margin-bottom: 5px;
+    }
+    .textImageBanner-blockX .textcontent {
+        font-size: .9rem;
+    }
+
+
+
+
+    .textImageBanner-content {
+        position: relative;
+    }
+
+    .textImageBanner-inner {
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        margin: 20px 0 20px 0;
+        border: 7px;
+        padding: 0 7px;
+    }
+
+    .textImageBanner-inner > * {
+        flex: 0 0 50%;
+    }
+
+    .textImageBanner-text {
+        text-align: center;
+        padding: 10px 20px;
+    }
+
+    .textImageBanner-image {
+        margin: 0;
+    }
+
+    @media (min-width:769px) {
+        .textImageBanner-inner {
+            flex-direction: row;
+            align-items: center;
+        }
+        .textImageBanner-text {
+            text-align: left;
+        }
+        .textImageBanner-image {
+            margin: -40px 0;
+        }
+    }
+
+    .row-full {
+        width: 100vw;
+        position: relative;
+        margin-left: -50vw;
+        margin-top: 0px;
+        left: 50%;
+    }
+
+    .row-full.gray {
+        background-color: #c0c0c0;
+        border-top: 2px solid #fff;
+        background-image: linear-gradient(to bottom, #c0c0c0, #cccccc, #d7d7d7, #e3e3e3, #efefef, #efefef, #efefef, #efefef, #e3e3e3, #d7d7d7, #cccccc, #c0c0c0);
+
+    }
+
+
+</style>

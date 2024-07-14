@@ -1,0 +1,130 @@
+
+<div class="researchContent-block" style="background: {{ section.settings.researchBgColor }}; color: {{ section.settings.researchColor }};" class="{% if section.settings.researchImage %} has-image{% endif %}">
+    {%- if section.settings.researchImage -%}
+        <div class="researchContentdiv researchContentdivimage">
+            <img src="{{ section.settings.researchImage | img_url: 'original' }}" alt="{{ section.settings.researchTitle }}" />
+        </div>
+    {%- endif -%}
+    <div class="researchContentdiv">
+        <div class="section-header text-{{ section.settings.align_text }}">
+            <h2 style="color: {{ section.settings.researchColor }};">{{ section.settings.researchTitle }}</h2>
+        </div>
+        <div class="section-content text-{{ section.settings.align_text }}">
+            {{ section.settings.researchDescription }}
+        </div>
+    </div>
+</div>
+
+
+{% schema %}
+{
+"name": "research Content",
+"settings": [
+{
+"type": "header",
+"content": "Money Back research"
+},
+{
+"type": "color",
+"id": "researchColor",
+"label": "Research Text Color"
+},
+{
+"type": "color",
+"id": "researchBgColor",
+"label": "Research BG Color"
+},
+{
+"type": "image_picker",
+"id": "researchImage",
+"label": "Research Image"
+},
+{
+"type": "text",
+"id": "researchTitle",
+"label": "Research title"
+},
+{
+"type": "textarea",
+"id": "researchDescription",
+"label": "Research Description"
+},
+{
+"type": "select",
+"id": "align_text",
+"label": "Alignment",
+"default": "left",
+"options": [
+{
+"value": "left",
+"label": "Left"
+},
+{
+"value": "center",
+"label": "Centered"
+},
+{
+"value": "right",
+"label": "Right"
+}
+]
+}
+]
+}
+{% endschema %}
+<style>
+    .researchContent-block {
+        padding: 50px 10%;
+        display: flex;
+        padding-bottom:30px;
+    }
+    .researchContent-block .has-image .researchContentdiv {
+        width:50%;
+    }
+    .researchContentdivimage{
+        text-align:center;
+    }
+    .researchContent-block .researchContentdiv h2 {
+        font-size: 22px;
+        line-height: 30px;
+        font-weight: 600;
+        color: #fff;
+
+    }
+    .researchContent-block .emphasize {
+        font-weight: bold;
+        font-style: italic;
+    }
+    .researchContent-block .smaller {
+        font-size: .9rem;
+    }
+    .researchContent-block .researchContentdiv ul {
+        margin-top:30px;
+        margin-left: 22px;
+        list-style-type:none;
+    }
+    .researchContent-block .researchContentdiv ul li {
+        margin-bottom:10px;
+        position:relative;
+        padding-left:10px;
+        font-size: 17px;
+    }
+    .researchContent-block .researchContentdiv ul li span {
+        position: absolute;
+        left: -20px;
+        top: 4px;
+        bottom: 0px;
+    }
+
+    @media screen and (max-width: 768px) {
+        .researchContent-block{
+            display:block;
+        }
+        .researchContent-block .researchContentdiv {
+            width:100%;
+        }
+        .researchContent-block .researchContentdiv h2 {
+            margin-top: 25px;
+        }
+    }
+</style>

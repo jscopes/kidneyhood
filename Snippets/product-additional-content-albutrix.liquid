@@ -1,0 +1,807 @@
+{%- liquid
+    if product
+        assign section_id = section_id | append: '-' | append: product.id
+    endif
+
+    assign show_real_content = false
+    assign has_custom_tabs = false
+    for tag in product.tags
+        if tag contains '_tab'
+            assign has_custom_tabs = true
+        endif
+    endfor
+
+    assign reviews_as_tab = false
+    if settings.enable_product_reviews and settings.reviews_layout == 'expandable'
+        assign reviews_as_tab = true
+    endif
+-%}
+
+{%- if settings.product_content_1 != blank or settings.product_content_2 != blank or settings.product_content_3 != blank or settings.product_contact or reviews_as_tab or has_custom_tabs -%}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <div class="collapsibles-wrapper collapsibles-wrapper--border-bottom">
+
+        {%- if show_real_content -%}
+
+            {%- for tag in product.tags -%}
+                {%- if tag contains '_tab' -%}
+                    {%- assign include_page_handle = tag | split: '_' -%}
+                    {%- assign include_page = pages[include_page_handle.last] -%}
+                    {%- if include_page.title != blank -%}
+                        <button type="button" class="label collapsible-trigger collapsible-trigger-btn collapsible-trigger-btn--borders collapsible--auto-height" aria-controls="Product-content-{{ include_page_handle.last }}-{{ section_id }}">
+                            {{ include_page.title }}
+                            {%- render 'collapsible-icons' -%}
+                        </button>
+                        <div id="Product-content-{{ include_page_handle.last }}-{{ section_id }}" class="collapsible-content collapsible-content--all">
+                            <div class="collapsible-content__inner rte">
+                                {{ include_page.content }}
+                            </div>
+                        </div>
+                    {%- endif -%}
+                {%- endif -%}
+            {%- endfor -%}
+
+            {%- if settings.product_content_1 != blank -%}
+                {%- if settings.product_content_collapse_1 -%}
+                    <button type="button" class="label collapsible-trigger collapsible-trigger-btn collapsible-trigger-btn--borders" aria-controls="Product-content-1-{{ section_id }}">
+                        {{ pages[settings.product_content_1].title }}
+                        {%- render 'collapsible-icons' -%}
+                    </button>
+                {%- else -%}
+                    <div class="label collapsible-trigger-btn collapsible-trigger-btn--borders">
+                        {{ pages[settings.product_content_1].title }}
+                    </div>
+                {%- endif -%}
+
+                <div id="Product-content-1-{{ section_id }}" class="collapsible-content{% unless settings.product_content_collapse_1 %} collapsible-content--expanded{% else %} collapsible-content--all{% endunless %}">
+                    <div class="collapsible-content__inner rte">
+                        {{ pages[settings.product_content_1].content }}
+                    </div>
+                </div>
+            {%- endif -%}
+
+            {%- if settings.product_content_2 != blank -%}
+                {%- if settings.product_content_collapse_2 -%}
+                    <button type="button" class="label collapsible-trigger collapsible-trigger-btn collapsible-trigger-btn--borders" aria-controls="Product-content-2-{{ section_id }}">
+                        {{ pages[settings.product_content_2].title }}
+                        {%- render 'collapsible-icons' -%}
+                    </button>
+                {%- else -%}
+                    <div class="label collapsible-trigger-btn collapsible-trigger-btn--borders">
+                        {{ pages[settings.product_content_2].title }}
+                    </div>
+                {%- endif -%}
+
+                <div id="Product-content-2-{{ section_id }}" class="collapsible-content{% unless settings.product_content_collapse_2 %} collapsible-content--expanded{% else %} collapsible-content--all{% endunless %}">
+                    <div class="collapsible-content__inner rte">
+                        {{ pages[settings.product_content_2].content }}
+                    </div>
+                </div>
+            {%- endif -%}
+
+
+        {%- else -%}
+
+
+
+        <div class="row-full gray">
+            <div class="page-width">
+                <div class="integrated-head">
+                    <h2 class="pdp-h2">We Do the Work So You Can Be Successful at Home</h2>
+                </div>
+                <div class="integrated-content">
+                    <div class="integrated-inner">
+                        <div class="integrated-text">
+                            Albutrix S3 and Microtrix low dose multivitamin are part of an integrated dietary approach that combines world's best guidance, clinical studies and a money back guarantee for the best technology.
+                        </div>
+                        <div class="integrated-image">
+                            <img alt="The Kidneyhood program includes Albutrix, Microtrix and our dietary approach" src="https://cdn.shopify.com/s/files/1/0012/4754/3384/files/albutrix_clinically_proven_integrated_program.png?v=1720024149">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row-full white">
+            <div class="page-width">
+
+                <div class="guidance-head">
+                    <h2 class="pdp-h2">Follows Latest Guidance and Recommendations</h2>
+                </div>
+                <div class="guidance-content">
+                    <p>The Kidneyhood.org approach of a very low protein diet with a protein supplemented from a keto acid analog, like Albutrix, follows the current recommendations from:</p>
+
+                    <ul class="list-style-none hang-bullets">
+                        <li><span><i class="fa fa-solid fa-angle-right"></i></span> 2020 Kidney Disease Initiative Quality Outcomes (KDOQI), a joint recommendation from the National Kidney Foundation (NKF) and the Academy of Nutrition and Dietetics</li>
+                        <li><span><i class="fa fa-solid fa-angle-right"></i></span> 2024 Kidney Disease improving Global outcomes (KDIGO) update on best practices for kidney disease patients.</li>
+                        <li><span><i class="fa fa-solid fa-angle-right"></i></span> The integrated combination of the Kidneyhood.org very low protein diet, Albutrix and Microtrix was proven effective in clinical studies</li>
+                        <li><span><i class="fa fa-solid fa-angle-right"></i></span> When you use our books and products, you have the confidence that are also following current guidance* from the largest, most reputable kidney related organizations and using a clinically proven approach.</li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+
+
+
+
+
+        <div class="row-full blue">
+            <div class="page-width">
+            <div class="inner-bg">
+
+                <div class="compare-head">
+                    <h2 class="pdp-h2">Compare Albutrix to Other Protein Sources Designed for Kidney Patients</h2>
+                </div>
+
+                <table class="compare-table">
+                    <tbody>
+                    <tr>
+                        <th></th>
+                        <th>{{ product.metafields.custom.short_title }}</th>
+                        <th>Other Protein Source<br>for Kidney Patients</th>
+                    </tr>
+
+                    <tr>
+                        <td><p>Guaranteed to the the lowest in nitrogen content</p></td>
+                        <td>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M17.082 1L7.91797 13.4272L2.5 7.85848L0 10.4299L8.33203 19L20 3.57143L17.082 1Z" fill="#0A7C3E"></path>
+                            </svg>
+                        </td>
+                        <td>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M20 3.71415L17.2859 1L10.5 7.78585L3.71415 1L1 3.71415L7.78585 10.5L1 17.2859L3.71415 20L10.5 13.2141L17.2859 20L20 17.2859L13.2141 10.5L20 3.71415Z" fill="#EB5757"></path>
+                            </svg>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td><p>Guaranteed to contain the highest magnesium</p></td>
+                        <td>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M17.082 1L7.91797 13.4272L2.5 7.85848L0 10.4299L8.33203 19L20 3.57143L17.082 1Z" fill="#0A7C3E"></path>
+                            </svg>
+                        </td>
+                        <td>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M20 3.71415L17.2859 1L10.5 7.78585L3.71415 1L1 3.71415L7.78585 10.5L1 17.2859L3.71415 20L10.5 13.2141L17.2859 20L20 17.2859L13.2141 10.5L20 3.71415Z" fill="#EB5757"></path>
+                            </svg>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td><p>Guaranteed to have the lowest calcium content</p></td>
+                        <td>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M17.082 1L7.91797 13.4272L2.5 7.85848L0 10.4299L8.33203 19L20 3.57143L17.082 1Z" fill="#0A7C3E"></path>
+                            </svg>
+                        </td>
+                        <td>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M20 3.71415L17.2859 1L10.5 7.78585L3.71415 1L1 3.71415L7.78585 10.5L1 17.2859L3.71415 20L10.5 13.2141L17.2859 20L20 17.2859L13.2141 10.5L20 3.71415Z" fill="#EB5757"></path>
+                            </svg>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td><p>Integrated with dietary intake to achieve RDA's each essential amino acid</p></td>
+                        <td>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M17.082 1L7.91797 13.4272L2.5 7.85848L0 10.4299L8.33203 19L20 3.57143L17.082 1Z" fill="#0A7C3E"></path>
+                            </svg>
+                        </td>
+                        <td>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M20 3.71415L17.2859 1L10.5 7.78585L3.71415 1L1 3.71415L7.78585 10.5L1 17.2859L3.71415 20L10.5 13.2141L17.2859 20L20 17.2859L13.2141 10.5L20 3.71415Z" fill="#EB5757"></path>
+                            </svg>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td><p>Allows less restrictive diet due to lower nitrogen content</p></td>
+                        <td>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M17.082 1L7.91797 13.4272L2.5 7.85848L0 10.4299L8.33203 19L20 3.57143L17.082 1Z" fill="#0A7C3E"></path>
+                            </svg>
+                        </td>
+                        <td>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M20 3.71415L17.2859 1L10.5 7.78585L3.71415 1L1 3.71415L7.78585 10.5L1 17.2859L3.71415 20L10.5 13.2141L17.2859 20L20 17.2859L13.2141 10.5L20 3.71415Z" fill="#EB5757"></path>
+                            </svg>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td><p>Complies with guidance to reduce or eliminate supplemental calcium intake</p></td>
+                        <td>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M17.082 1L7.91797 13.4272L2.5 7.85848L0 10.4299L8.33203 19L20 3.57143L17.082 1Z" fill="#0A7C3E"></path>
+                            </svg>
+                        </td>
+                        <td>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M20 3.71415L17.2859 1L10.5 7.78585L3.71415 1L1 3.71415L7.78585 10.5L1 17.2859L3.71415 20L10.5 13.2141L17.2859 20L20 17.2859L13.2141 10.5L20 3.71415Z" fill="#EB5757"></path>
+                            </svg>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td><p>Money back guarantee</p></td>
+                        <td>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M17.082 1L7.91797 13.4272L2.5 7.85848L0 10.4299L8.33203 19L20 3.57143L17.082 1Z" fill="#0A7C3E"></path>
+                            </svg>
+                        </td>
+                        <td>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M20 3.71415L17.2859 1L10.5 7.78585L3.71415 1L1 3.71415L7.78585 10.5L1 17.2859L3.71415 20L10.5 13.2141L17.2859 20L20 17.2859L13.2141 10.5L20 3.71415Z" fill="#EB5757"></path>
+                            </svg>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td><p>Free email and phone support</p></td>
+                        <td>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M17.082 1L7.91797 13.4272L2.5 7.85848L0 10.4299L8.33203 19L20 3.57143L17.082 1Z" fill="#0A7C3E"></path>
+                            </svg>
+                        </td>
+                        <td>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M20 3.71415L17.2859 1L10.5 7.78585L3.71415 1L1 3.71415L7.78585 10.5L1 17.2859L3.71415 20L10.5 13.2141L17.2859 20L20 17.2859L13.2141 10.5L20 3.71415Z" fill="#EB5757"></path>
+                            </svg>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td><p>Part of a clinically proven dietary approach to kidney disease management</p></td>
+                        <td>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M17.082 1L7.91797 13.4272L2.5 7.85848L0 10.4299L8.33203 19L20 3.57143L17.082 1Z" fill="#0A7C3E"></path>
+                            </svg>
+                        </td>
+                        <td>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M20 3.71415L17.2859 1L10.5 7.78585L3.71415 1L1 3.71415L7.78585 10.5L1 17.2859L3.71415 20L10.5 13.2141L17.2859 20L20 17.2859L13.2141 10.5L20 3.71415Z" fill="#EB5757"></path>
+                            </svg>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td><p>Free multivitamin provided with every Albutrix purchase</p></td>
+                        <td>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M17.082 1L7.91797 13.4272L2.5 7.85848L0 10.4299L8.33203 19L20 3.57143L17.082 1Z" fill="#0A7C3E"></path>
+                            </svg>
+                        </td>
+                        <td>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M20 3.71415L17.2859 1L10.5 7.78585L3.71415 1L1 3.71415L7.78585 10.5L1 17.2859L3.71415 20L10.5 13.2141L17.2859 20L20 17.2859L13.2141 10.5L20 3.71415Z" fill="#EB5757"></path>
+                            </svg>
+                        </td>
+                    </tr>
+
+
+
+                    </tbody>
+                </table>
+
+            </div>
+            </div>
+        </div>
+
+
+        <div class="row-full white">
+            <div class="page-width">
+
+
+                <div class="microtrix-included">
+                    <div class="microtix-head">
+                        <h3 class="pdp-h3">Microtrix Multivitamin Included With Every Albutrix Order</h3>
+                    </div>
+                    <div class="inner">
+                        <div class="microtix-content">
+                            <div class="microtrix-banner">
+                                <div class="bottle">
+                                    <img alt="" src="https://cdn.shopify.com/s/files/1/0012/4754/3384/files/microtrix_silo_tight_480x480.png?v=1709265260" data-mce-src="https://cdn.shopify.com/s/files/1/0012/4754/3384/files/microtrix_silo_tight_480x480.png?v=1709265260">
+                                </div>
+                                <div class="text">
+                                    <p>Microtrix, is the first and only multivitamin for kidney patients on a low protein diet. Microtrix provides any shortfalls in the RDA so that long term nutritional safety is assured. All diets run the risk of malnutrition or overnutrition (getting too much of something). Both of these are harmful to kidney patients. Microtrix also provide vitamin K2. Vitamin K2 is associated with calcium regulation and reduced vascular calcification.</p>
+                                    <p><strong>Microtrix is included FREE with every Albutrix order to ensure all nutrition guidelines are met.</strong></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+
+        <div class="row-full blue">
+            <div class="page-width">
+
+
+                <div class="grid grid--smallX grid--matched-height">
+                    <div class="grid__item medium-up--one-half">
+                        <div class="inner-bg">
+
+
+                            <div class="guaranteeContent-block">
+                                <div class="guaranteeContent-block-inner" >
+                                    <div class="guaranteeContentdiv">
+                                        <h3 class="pdp-h3">Guaranteed to be the Best</h3>
+                                        <div class="section-content">
+                                            <ul class="list-style-none hang-bullets">
+                                                <li>
+                                                    <span><i class="fa fa-regular fa-check"></i></span>Albutrix S3, S4 and S5 are guaranteed to contain the lowest nitrogen content of any keto acid analog or a protein supplement for kidney patients.
+                                                </li>
+                                                <li>
+                                                    <span><i class="fa fa-regular fa-check"></i></span>Albutrix S3 and S4 are guaranteed to contain the lowest supplement calcium of any keto acid analog for kidney patients.</li>
+                                                <li>
+                                                    <span><i class="fa fa-regular fa-check"></i></span>Albutrix S3 and S4 are guaranteed to contain the highest amount of magnesium of any keto acid analog for kidney patients.</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid__item medium-up--one-half">
+                        <div class="us-made inner-bg text-center">
+                            <h3 class="pdp-h3">FDA-Registered & USA Made</h3>
+                            <div class="section-content">
+                                <p>All products are made in the USA in FDA-registered facilities. Every lot/batch is tested before it is released to customers.</p>
+                                <div class="flex-images">
+                                    <span><img src="https://cdn.shopify.com/s/files/1/0012/4754/3384/files/made-in-usa.png?v=1719855509" /></span>
+                                    <span style="padding: 0 15px;"><img src="https://cdn.shopify.com/s/files/1/0012/4754/3384/files/FDARegistered.png?v=1719855790" /></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row-full green">
+            <div class="page-width">
+
+                    <div class="inner-bg">
+                        <div class="grid grid--smallX grid--matched-height">
+                            <div class="grid__item medium-up--two-thirds">
+
+                                <div class="still-have-questions">
+                                    <div class="inner">
+                                        <div class="head">Still Have Questions?&nbsp;</div>
+                                        <div class="link"><a href="/pages/contact-us" target="_blank">Contact Us</a>, our customer service team is ready to help!</div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="grid__item medium-up--one-third">
+                                <div style="text-align: left;"><img alt="" src="https://cdn.shopify.com/s/files/1/0012/4754/3384/files/secure-checkout_480x480.png?v=1613166176"></div>
+                            </div>
+                        </div>
+                    </div>
+
+            </div>
+        </div>
+
+
+            <!-- INSERT CODE HERE  -->
+
+
+        {%- endif -%}
+
+
+
+        {%- if show_real_content -%}
+            {%- if settings.product_content_3 != blank -%}
+                {%- if settings.product_content_collapse_3 -%}
+                    <button type="button" class="label collapsible-trigger collapsible-trigger-btn collapsible-trigger-btn--borders" aria-controls="Product-content-3-{{ section_id }}">
+                        {{ pages[settings.product_content_3].title }}
+                        {%- render 'collapsible-icons' -%}
+                    </button>
+                {%- else -%}
+                    <div class="label collapsible-trigger-btn collapsible-trigger-btn--borders">
+                        {{ pages[settings.product_content_3].title }}
+                    </div>
+                {%- endif -%}
+
+                <div id="Product-content-3-{{ section_id }}" class="collapsible-content{% unless settings.product_content_collapse_3 %} collapsible-content--expanded{% else %} collapsible-content--all{% endunless %}">
+                    <div class="collapsible-content__inner rte">
+                        {{ pages[settings.product_content_3].content }}
+                    </div>
+                </div>
+            {%- endif -%}
+
+            {%- if settings.product_contact -%}
+                {%- assign form_id = 'contact-' | append: section_id -%}
+                {%- form 'contact', id: form_id  -%}
+                    <button type="button" class="label collapsible-trigger collapsible-trigger-btn collapsible-trigger-btn--borders" aria-controls="Product-content-4-{{ section_id }}">
+                        {{ settings.product_contact_title }}
+                        {%- render 'collapsible-icons' -%}
+                    </button>
+
+                    <div id="Product-content-4-{{ section_id }}" class="collapsible-content collapsible-content--all">
+                        <div class="collapsible-content__inner rte">
+                            <div class="form-vertical">
+
+                                <input type="hidden" name="contact[product]" value="Product question for: {{ shop.secure_url }}/admin/products/{{ product.id }}">
+
+                                <div class="grid grid--small">
+                                    <div class="grid__item medium-up--one-half">
+                                        <label for="ContactFormName-{{ section_id }}">{{ 'contact.form.name' | t }}</label>
+                                        <input type="text" id="ContactFormName-{{ section_id }}" class="input-full" name="contact[name]" autocapitalize="words" value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}">
+                                    </div>
+
+                                    <div class="grid__item medium-up--one-half">
+                                        <label for="ContactFormEmail-{{ section_id }}">{{ 'contact.form.email' | t }}</label>
+                                        <input type="email" id="ContactFormEmail-{{ section_id }}" class="input-full" name="contact[email]" autocorrect="off" autocapitalize="off" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}">
+                                    </div>
+                                </div>
+
+                                {%- if settings.product_contact_show_phone -%}
+                                    <label for="ContactFormPhone-{{ section_id }}">{{ 'contact.form.phone' | t }}</label>
+                                    <input type="tel" id="ContactFormPhone-{{ section_id }}" class="input-full" name="contact[phone]" pattern="[0-9\-]*" value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}">
+                                {%- endif -%}
+
+                                <label for="ContactFormMessage-{{ section_id }}">{{ 'contact.form.message' | t }}</label>
+                                <textarea rows="5" id="ContactFormMessage-{{ section_id }}" class="input-full" name="contact[body]">{% if form.body %}{{ form.body }}{% endif %}</textarea>
+
+                                <button type="submit" class="btn">
+                                    {{ 'contact.form.send' | t }}
+                                </button>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    {%- if form.posted_successfully? -%}
+                        <p class="note note--success">
+                            {{ 'contact.form.post_success' | t }}
+                        </p>
+                    {%- endif -%}
+
+                    {%- if form.product -%}
+                        {{ form.errors | default_errors }}
+                    {%- endif -%}
+
+                {%- endform -%}
+            {%- endif -%}
+
+
+            {%- if reviews_as_tab -%}
+                <button type="button" class="label collapsible-trigger collapsible-trigger-btn collapsible-trigger-btn--borders collapsible--auto-height" aria-controls="Product-content-5-{{ section_id }}">
+                    <span class="shopify-product-reviews-badge" data-id="{{ product.id }}">Reviews</span>
+                    {%- render 'collapsible-icons' -%}
+                </button>
+
+                <div id="Product-content-5-{{ section_id }}" class="collapsible-content collapsible-content--all">
+                    <div class="collapsible-content__inner product-reviews product-reviews--tab">
+                        <div id="shopify-product-reviews" data-id="{{product.id}}">{{ product.metafields.spr.reviews }}</div>
+                    </div>
+                </div>
+            {%- endif -%}
+        {%- endif -%}
+
+        <div class="fda-disclaimer">
+            *Any results or information have not been evaluated by the FDA and improvements will vary on dietary compliance, use of Albutrix and Microtrix and patients overall health.
+        </div>
+    </div>
+{%- endif -%}
+
+<style>
+    #shopify-section-product-section-albutrix .collapsibles-wrapper--border-bottom {
+        margin-top: 40px;
+    }
+    .guaranteeContent-block {
+        padding: 0;
+        display: flex;
+    }
+    .guaranteeContent-block-inner {
+        padding: 0;
+        display: flex;
+    }
+    .guaranteeContent-block .guaranteeContentdiv {
+    }
+    .guaranteeContent-block .has-image .guaranteeContentdiv {
+        width:50%;
+    }
+    .guaranteeContentdivimage{
+        text-align:center;
+    }
+    .guaranteeContent-block .guaranteeContentdiv h2 {
+        font-size: 22px;
+        line-height: 30px;
+        font-weight: 600;
+    }
+    ul.hang-bullets {
+        margin-left: 22px;
+    }
+    ul.hang-bullets li {
+        margin-bottom:10px;
+        position:relative;
+        padding-left:10px;
+        font-size: .85rem;
+    }
+    ul.hang-bullets li span {
+        position: absolute;
+        left: -20px;
+        top: 0px;
+        bottom: 0px;
+    }
+
+    @media screen and (max-width: 768px) {
+        .guaranteeContent-block{
+            display:block;
+        }
+        .guaranteeContent-block .guaranteeContentdiv {
+            width:100%;
+        }
+    }
+
+    .product-single__description-full {
+        margin: 45px 0;
+    }
+
+    .collapsible-trigger-btn {
+        font-size: 1.1rem;
+    }
+
+    .pdp-h2 {
+        text-align: center;
+        font-size: 20px;
+        line-height: 30px;
+        font-weight: 600;
+    }
+
+    .pdp-h3 {
+        text-align: center;
+        font-size: 18px;
+        line-height: 28px;
+        font-weight: 600;
+    }
+
+    @media (min-width:769px) {
+        .pdp-h2 {
+            font-size: 24px;
+        }
+
+        .pdp-h3 {
+            text-align: center;
+            font-size: 21px;
+            line-height: 28px;
+            font-weight: 600;
+        }
+    }
+
+
+    .integrated-content {
+        position: relative;
+    }
+
+    .integrated-inner {
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        margin: 40px 0 20px 0;
+        border: 7px;
+        padding: 0 7px;
+    }
+
+    .integrated-inner > * {
+        flex: 0 0 50%;
+    }
+
+    .integrated-text {
+        text-align: center;
+        padding: 10px 20px;
+    }
+
+    .integrated-image {
+        margin: 0;
+    }
+
+    @media (min-width:769px) {
+        .integrated-inner {
+            flex-direction: row;
+            align-items: center;
+        }
+        .integrated-text {
+            text-align: left;
+        }
+        .integrated-image {
+            margin: -40px 0;
+        }
+    }
+
+    .blue table.compare-table tr > * {
+        text-align: center;
+        font-size: .85rem;
+        line-height: 1.1;
+        border: 1px solid #d2d2d2;
+        padding: 5px;
+        color: #000;
+    }
+
+    .blue table.compare-table th {
+        font-size: .75rem;
+        font-weight: bold;
+    }
+
+    .blue table.compare-table tr > td:first-child {
+        text-align: left;
+    }
+
+    @media (min-width:769px) {
+        .blue table.compare-table tr > * {
+            text-align: center;
+            font-size: .85rem;
+            line-height: 1.1;
+            border: 1px solid #d2d2d2;
+            padding: 10px 15px;
+        }
+        .blue table.compare-table th {
+            font-size: .85rem;
+        }
+    }
+
+
+    .microtrix-included > .inner {
+        padding: 0px 10px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .microtrix-banner .bottle {
+        float: left;
+        width: 100px;
+        margin-right: 10px;
+    }
+
+    .microtrix-banner .bottle img {
+        width: 100%;
+    }
+
+    .microtrix-banner p {
+        font-size: 15px;
+        margin-bottom: 7px;
+    }
+
+    @media (min-width:769px) {
+        .microtrix-included > .inner {
+            padding: 0px 25px;
+        }
+
+        .microtrix-banner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: -10px 0;
+            gap: 30px;
+        }
+
+        .microtrix-banner .bottle {
+            flex: 0 0 100px;
+        }
+
+        .microtrix-banner .text {
+            flex: 1 1 auto;
+        }
+    }
+
+
+    .still-have-questions .head {
+        color: #0a7c3e;
+        font-size: 1.4rem;
+    }
+
+    .still-have-questions a {
+        text-decoration: underline;
+    }
+
+    .flex-images {
+        display: flex;
+        margin: 0 40px;
+        gap: 40px;
+        padding: 15px 0;
+        justify-content: center;
+    }
+    .flex-images img {
+        width: 100%;
+        max-height: 70px;
+    }
+
+    .grid--matched-height .grid__item {
+        margin-bottom: 15px;
+    }
+    
+    @media (min-width:769px) {
+        .grid--matched-height {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 0 !important;
+        }
+
+        .grid--matched-height .grid__item {
+            margin-bottom: 0;
+        }
+   }
+
+
+    .inner-bg {
+        height: 100%;
+        background: #fff;
+        padding: 15px;
+        border-radius: 15px;
+        border: 2px solid #c9c9c9;
+    }
+
+    .row-full {
+        width: 100vw;
+        position: relative;
+        margin-left: -50vw;
+        margin-top: 0px;
+        padding: 30px 0;
+        left: 50%;
+    }
+
+    .row-full.gray {
+        background-color: #c0c0c0;
+        border-top: 2px solid #fff;
+        background-image: linear-gradient(to bottom, #c0c0c0, #cccccc, #d7d7d7, #e3e3e3, #efefef, #efefef, #efefef, #efefef, #e3e3e3, #d7d7d7, #cccccc, #c0c0c0);
+
+    }
+
+    .row-full.blue {
+        background-color: #a1a6ef;
+        background-image: linear-gradient(to bottom, #a1a6ef, #aeb2f2, #bcbff5, #c9cbf8, #d6d8fb, #d6d8fb, #d6d8fb, #d6d8fb, #c9cbf8, #bcbff5, #aeb2f2, #a1a6ef);;
+        border-top: 2px solid #fff;
+    }
+
+    .row-full.green {
+        background-color: #0a7c3e;
+        background-image: linear-gradient(to bottom, #0a7c3e, #2e8c53, #469d68, #5dad7d, #74be93, #74be93, #74be93, #74be93, #5dad7d, #469d68, #2e8c53, #0a7c3e);;
+        border-top: 2px solid #fff;
+    }
+
+    .row-full .section-header {
+        margin-bottom: 15px;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        font-size: 1.2rem;
+    }
+
+    .row-full .section-header > * {
+        margin-bottom: 0;
+    }
+
+    .row-full .section-content {
+        font-size: 15px;
+    }
+
+    .row-full .section-content p {
+        font-size: 15px;
+        margin-bottom: 7px;
+    }
+
+    .fda-disclaimer {
+        padding: 30px 15px 0 15px;
+        margin-bottom: -30px;
+        font-size: .85rem;
+        text-align: left;
+    }
+
+</style>

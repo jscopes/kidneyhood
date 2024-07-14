@@ -1,0 +1,136 @@
+<div class="page-width">
+    {%- if section.settings.title != blank -%}
+        <h2>{{ section.settings.title }}</h2>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+        {%- for block in section.blocks -%}
+
+            <div class="blockquote-wrap">
+                {%- if block.settings.quote_caret_enable -%}
+                    <span><i class="fa fa-solid fa-2x fa-caret-right"></i></span>
+                {%- endif -%}
+
+                <blockquote>
+                    {%- if block.settings.quote != blank -%}
+                        <p>
+                            {{ block.settings.quote }}
+                        </p>
+                    {%- endif -%}
+                </blockquote>
+
+                {%- if block.settings.author != blank -%}
+                    <cite>
+                        <a href="{{ block.settings.link }}">
+                            {{ block.settings.author }}
+                        </a>
+                    </cite>
+                {%- endif -%}
+            </div>
+
+        {%- endfor -%}
+    {%- endif -%}
+</div>
+{% schema %}
+{
+"name": "Quotes",
+"class": "index-section",
+"max_blocks": 8,
+"settings": [
+{
+"type": "text",
+"id": "title",
+"label": "Heading",
+"default": "Testimonials"
+}
+],
+"blocks": [
+{
+"type": "quote",
+"name": "Testimonial",
+"settings": [
+{
+"type": "checkbox",
+"id": "quote_caret_enable",
+"label": "Show caret icon",
+"default": false
+},
+{
+"type": "richtext",
+"id": "quote",
+"label": "Text",
+"default": "<p>Add customer reviews and testimonials to showcase your store's happy customers.</p>"
+},
+{
+"type": "text",
+"id": "author",
+"label": "Author",
+"default": "Author’s name"
+},
+{
+"type": "url",
+"id": "link",
+"label": "link"
+}
+]
+}
+],
+"presets": [
+{
+"name": "Quotes",
+"category": "Text",
+"blocks": [
+{
+"type": "quote"
+},
+{
+"type": "quote"
+},
+{
+"type": "quote"
+}
+]
+}
+]
+}
+{% endschema %}
+
+<style>
+    .blockquote-wrap {
+        display: flex;
+        align-content: center;
+        margin: 0 auto 8px auto;
+        max-width: 800px;
+        gap: 20px;
+    }
+    .blockquote-wrap > blockquote {
+        padding: 15px 0;
+        font-style: italic;
+        font-size: 1.0rem;
+        line-height: 1.3;
+    }
+    .blockquote-wrap > span {
+        display: inline-block;
+        padding: 15px 0;
+    }
+    .blockquote-wrap .fa-2x {
+        font-size: 2.5rem;
+        font-style: italic;
+        color: #2f358d;
+    }
+    @media (min-width:769px) {
+        .blockquote-wrap {
+            margin-bottom: 15px;
+        }
+        .blockquote-wrap > blockquote {
+            padding: 15px 0;
+            font-size: 1.2rem;
+        }
+        .blockquote-wrap > span {
+        }
+        .blockquote-wrap .fa-2x {
+            font-size: 2.0rem;
+        }
+    }
+
+</style>
