@@ -1,0 +1,245 @@
+{%- style -%}
+    .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+    }
+
+    @media screen and (min-width: 769px) {
+    .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+    }
+{%- endstyle -%}
+
+<div class="section-{{ section.id }}-padding">
+    <div class="page-width">
+        {%- if section.settings.title != blank -%}
+            <div class="section-header">
+                <p class="h2 text-center">{{ section.settings.title | escape }}</p>
+            </div>
+        {%- endif -%}
+        <div class="table-wrapper">
+            <table class="compare-table">
+                <tr>
+                    <th></th>
+                    {% if section.settings.table_heading_1 %}
+                        <th>{{ section.settings.table_heading_1 }}</th>
+                    {% endif %}
+                    {% if section.settings.table_heading_2 %}
+                        <th>{{ section.settings.table_heading_2 }}</th>
+                    {% endif %}
+                    {% if section.settings.table_heading_3 %}
+                        <th>{{ section.settings.table_heading_3 }}</th>
+                    {% endif %}
+                    {% if section.settings.table_heading_4 %}
+                        <th>{{ section.settings.table_heading_4 }}</th>
+                    {% endif %}
+                </tr>
+                {% for block in section.blocks %}
+                    {% capture mark1 %}
+                        {% if block.settings.mark1  == 'check' %}
+                            {% render 'icon-tick' %}
+                        {% elsif block.settings.mark1 == 'wrong' %}
+                            {% render 'icon-wrong' %}
+                        {% else %}
+                            <p>unknown</p>
+                        {% endif %}
+                    {% endcapture %}
+                    {% capture mark2 %}
+                        {% if block.settings.mark2  == 'check' %}
+                            {% render 'icon-tick' %}
+                        {% elsif block.settings.mark2 == 'wrong' %}
+                            {% render 'icon-wrong' %}
+                        {% else %}
+                            <p>unknown</p>
+                        {% endif %}
+                    {% endcapture %}
+                    {% capture mark3 %}
+                        {% if block.settings.mark3  == 'check' %}
+                            {% render 'icon-tick' %}
+                        {% elsif block.settings.mark3 == 'wrong' %}
+                            {% render 'icon-wrong' %}
+                        {% else %}
+                            <p>unknown</p>
+                        {% endif %}
+                    {% endcapture %}
+                    {% capture mark4 %}
+                        {% if block.settings.mark4  == 'check' %}
+                            {% render 'icon-tick' %}
+                        {% elsif block.settings.mark4 == 'wrong' %}
+                            {% render 'icon-wrong' %}
+                        {% else %}
+                            <p>unknown</p>
+                        {% endif %}
+                    {% endcapture %}
+
+                    <tr>
+                        <td><p>{{ block.settings.title }}</p></td>
+                        <td>{{ mark1 }}</td>
+                        <td>{{ mark2 }}</td>
+                        <td>{{ mark3 }}</td>
+                        <td>{{ mark4 }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+
+{% schema %}
+{
+"name": "Compare Table",
+"class": "compare-table-section",
+"settings": [
+{
+"type": "text",
+"id": "title",
+"label": "Heading",
+"default": "Large image with text box"
+},
+{
+"type": "text",
+"id": "table_heading_1",
+"label": "Table Heading 1"
+},
+{
+"type": "text",
+"id": "table_heading_2",
+"label": "Table Heading 2"
+},
+{
+"type": "text",
+"id": "table_heading_3",
+"label": "Table Heading 3"
+},
+{
+"type": "text",
+"id": "table_heading_4",
+"label": "Table Heading 4"
+},
+{
+"type": "header",
+"content": "Section Padding"
+},
+{
+"type": "range",
+"id": "padding_top",
+"min": 0,
+"max": 100,
+"step": 4,
+"unit": "px",
+"label": "Padding top",
+"default": 36
+},
+{
+"type": "range",
+"id": "padding_bottom",
+"min": 0,
+"max": 100,
+"step": 4,
+"unit": "px",
+"label": "Padding bottom",
+"default": 36
+}
+],
+"blocks": [
+{
+"type": "cell",
+"name": "Cell",
+"settings": [
+{
+"type": "text",
+"id": "title",
+"label": "Title"
+},
+{
+"type": "select",
+"id": "mark1",
+"label": "Mark 1",
+"default": "check",
+"options": [
+{
+"value": "check",
+"label": "Check"
+},
+{
+"value": "wrong",
+"label": "Wrong"
+},
+{
+"value": "unknown",
+"label": "Unknown"
+}
+]
+},
+{
+"type": "select",
+"id": "mark2",
+"label": "Mark 2",
+"default": "check",
+"options": [
+{
+"value": "check",
+"label": "Check"
+},
+{
+"value": "wrong",
+"label": "Wrong"
+},
+{
+"value": "unknown",
+"label": "Unknown"
+}
+]
+},
+{
+"type": "select",
+"id": "mark3",
+"label": "Mark 3",
+"default": "check",
+"options": [
+{
+"value": "check",
+"label": "Check"
+},
+{
+"value": "wrong",
+"label": "Wrong"
+},
+{
+"value": "unknown",
+"label": "Unknown"
+}
+]
+},
+{
+"type": "select",
+"id": "mark4",
+"label": "Mark 4",
+"default": "check",
+"options": [
+{
+"value": "check",
+"label": "Check"
+},
+{
+"value": "wrong",
+"label": "Wrong"
+},
+{
+"value": "unknown",
+"label": "Unknown"
+}
+]
+}
+]
+}
+],
+"presets": [
+{
+"name": "Compare Table"
+}
+]
+}
+{% endschema %}
