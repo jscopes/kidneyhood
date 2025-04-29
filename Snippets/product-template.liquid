@@ -28,7 +28,22 @@
     endcase
 
     assign product_img_structure = product.featured_media | img_url: '1x1' | replace: '_1x1.', '_{width}x.'
+
+    assign product_title_extra = ''
+    if product.metafields.custom.includes_microtrix == true
+        assign product_title_extra = ' + Microtix Multivitamin'
+    endif
+
+    assign product_title = product.title
+    if product.metafields.custom.short_title
+        assign product_title = product.metafields.custom.short_title | append: product_title_extra
+    endif
+
 -%}
+
+{%- if product.metafields.custom.star_rating -%}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+{%- endif -%}
 
 <div id="ProductSection-{{ section_id }}"
      class="product-section"
@@ -72,7 +87,52 @@
                                 video_looping: video_looping,
                                 video_style: video_style
                         -%}
+
+                        {%- if product.metafields.custom.klaviyo_button_target -%}
+                            {%- liquid
+                                assign klaviyo_button_text = 'Get Free Offer'
+                                if product.metafields.custom.klaviyo_button_text
+                                    assign klaviyo_button_text = product.metafields.custom.klaviyo_button_text
+                                endif
+                            -%}
+
+                            <div class="product-preview--btn mt-4 text-center">
+                                <a href="#" id="{{ section.settings.button_id }}" class="btn productSignUp-btn" data-kl-target="{{ product.metafields.custom.klaviyo_button_target }}">
+                                    {{ klaviyo_button_text }}
+                                </a>
+                            </div>
+                            <div id="SignUpModal-{{ product.metafields.custom.klaviyo_button_target }}" data-formtarget="Free Chapter" class="signup-modal">
+                                <div class="signup-modal-content">
+                                    <a class="signup-modal-close jsCloseModal" href="#">&times;</a>
+                                    <div class="klaviyo-form-{{ product.metafields.custom.klaviyo_button_target }}"></div>
+                                </div>
+                            </div>
+                            <script>
+                                function jQueryLoadedCallback() {
+                                    $(document).on('click.modalClose', '.jsCloseModal', function(e){
+                                        e.preventDefault();
+                                        $(this).closest('.signup-modal').css('display','none');
+                                    })
+
+                                    $('.productSignUp-btn').click(function(e) {
+                                        e.preventDefault();
+                                        $('#SignUpModal-'+$(this).attr('data-kl-target')).css('display','block');
+                                    });
+                                }
+
+                                function checkForJQuery(method) {
+                                    if (window.jQuery)
+                                        method();
+                                    else
+                                        setTimeout(function() { checkForJQuery(method) }, 200);
+                                }
+
+                                checkForJQuery(jQueryLoadedCallback);
+
+                            </script>
+                        {%- endif -%}
                     </div>
+
                 {%- endif -%}
 
                 <div class="grid__item {{ product_description_width }}">
@@ -97,12 +157,22 @@
 
                         {%- if isModal -%}
                             <p class="h2 product-single__title">
-                                {{ product.title }}
+                                {{ product_title }}
                             </p>
                         {%- else -%}
                             <h1 class="h2 product-single__title">
-                                {{ product.title }}
+                                {{ product_title }}
                             </h1>
+                        {%- endif -%}
+
+                        {%- if product.metafields.custom.new_description -%}
+                            <div class="grid-product__title grid-product__short_title">
+                                <p>{{ product.metafields.custom.new_description }}</p>
+                            </div>
+                        {%- elsif product.metafields.custom.short_description -%}
+                            <div class="grid-product__title grid-product__short_title">
+                                <p>Shop {{ product.metafields.custom.short_description }}</p>
+                            </div>
                         {%- endif -%}
 
                         {%- if settings.enable_product_reviews and settings.reviews_layout == 'full' -%}
@@ -126,33 +196,59 @@
                             </p>
                         {%- endif -%}
 
+                        <div class="product__info__group">
+                            {%- if product.metafields.custom.author or product.metafields.custom.release_date -%}
+                                <ul class="list-style-none list-style-inline">
+                                    <li class="author__name">by {{ product.metafields.custom.author }}</li>
+                                    <li class="release__date">Release date {{ product.metafields.custom.release_date | date: "%B %d, %Y" }}</li>
+                                </ul>
+                            {%- endif -%}
+
+                            {%- if product.metafields.custom.star_rating -%}
+                                <div class="ratings__group">
+                                    <div class="ratings__stars">
+                                        <div class="ratings__open">
+                                            <span class="fa fa-star-o"></span><span class="fa fa-star-o"></span><span class="fa fa-star-o"></span><span class="fa fa-star-o"></span><span class="fa fa-star-o"></span>
+                                        </div>
+                                        <div class="ratings__solid" style="width:{{ product.metafields.custom.star_rating | divided_by: 5 | times: 100 }}%;">
+                                            <span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span>
+                                        </div>
+                                    </div>
+                                    <div class="ratings__numbers">
+                                        <span class="star_rating">{{ product.metafields.custom.star_rating }}</span> <span class="ratings_count">({{ product.metafields.custom.rating_count }})</span>
+                                    </div>
+                                </div>
+                            {%- endif -%}
+                        </div>
+
                         {%- assign hide_sale_price = true -%}
                         {%- if product.compare_at_price_max > product.price -%}
                             {%- if current_variant.compare_at_price > current_variant.price -%}
                                 {%- assign hide_sale_price = false -%}
                             {%- endif -%}
-                            <span
-                                    id="PriceA11y-{{ section_id }}"
+
+                        <span id="PriceA11y-{{ section_id }}"
                                     class="visually-hidden"
                                     aria-hidden="{{ hide_sale_price }}">
-                  {{ 'products.general.regular_price' | t }}
-              </span>
-                            <span class="product__price-wrap-{{ section_id }}{% if hide_sale_price %} hide{% endif %}">
-                <span id="ComparePrice-{{ section_id }}" class="product__price product__price--compare">
-                  {%- if current_variant.compare_at_price > current_variant.price -%}
-                      {{ current_variant.compare_at_price | money }}
-                  {%- endif -%}
-                </span>
-              </span>
-                            <span id="ComparePriceA11y-{{ section_id }}" class="visually-hidden">{{ 'products.general.sale_price' | t }}</span>
-                        {%- else -%}
-                            <span id="PriceA11y-{{ section_id }}" class="visually-hidden">{{ 'products.general.regular_price' | t }}</span>
-                        {%- endif -%}
+                            {{ 'products.general.regular_price' | t }}
+                        </span>
+                        <span class="product__price-wrap-{{ section_id }}{% if hide_sale_price %} hide{% endif %}">
+                            <span id="ComparePrice-{{ section_id }}" class="product__price product__price--compare">
+                                {%- if current_variant.compare_at_price > current_variant.price -%}
+                                  {{ current_variant.compare_at_price | money }}
+                                {%- endif -%}
+                            </span>
+                        </span>
 
-                        <span id="ProductPrice-{{ section_id }}"
-                              class="product__price{% if current_variant.compare_at_price > current_variant.price %} on-sale{% endif %}">
-              {{ current_variant.price | money }}
-            </span>
+                        <span id="ComparePriceA11y-{{ section_id }}" class="visually-hidden">{{ 'products.general.sale_price' | t }}</span>
+                            {%- else -%}
+                                <span id="PriceA11y-{{ section_id }}" class="visually-hidden">{{ 'products.general.regular_price' | t }}</span>
+                            {%- endif -%}
+
+                            <span id="ProductPrice-{{ section_id }}"
+                                  class="product__price{% if current_variant.compare_at_price > current_variant.price %} on-sale{% endif %}">
+                            {{ current_variant.price | money }}
+                        </span>
 
                         {%- if settings.product_save_amount -%}
                             {%- if settings.product_save_type == 'dollar' -%}
@@ -161,22 +257,22 @@
                                 {%- capture saved_amount -%}{{ current_variant.compare_at_price | minus: current_variant.price | times: 100.0 | divided_by: current_variant.compare_at_price | round }}%{%- endcapture -%}
                             {%- endif -%}
                             <span id="SavePrice-{{ section_id }}" class="product__price-savings{% if hide_sale_price %} hide{% endif %}">
-                {%- unless hide_sale_price -%}
-                    {{ 'products.general.save_html' | t: saved_amount: saved_amount }}
-                {%- endunless -%}
-              </span>
+                                {%- unless hide_sale_price -%}
+                                    {{ 'products.general.save_html' | t: saved_amount: saved_amount }}
+                                {%- endunless -%}
+                            </span>
                         {%- endif -%}
 
                         <div class="product__unit-price product__unit-price--spacing product__unit-price-wrapper--{{ section_id }}{% unless current_variant.unit_price_measurement %} hide{% endunless %}">
                             {%- capture unit_price_base_unit -%}
                                 <span class="product__unit-base--{{ section_id }}">
-                  {%- if current_variant.unit_price_measurement -%}
-                      {%- if current_variant.unit_price_measurement.reference_value != 1 -%}
-                          {{ current_variant.unit_price_measurement.reference_value }}
-                      {%- endif -%}
-                      {{ current_variant.unit_price_measurement.reference_unit }}
-                  {%- endif -%}
-                </span>
+                                {%- if current_variant.unit_price_measurement -%}
+                                  {%- if current_variant.unit_price_measurement.reference_value != 1 -%}
+                                      {{ current_variant.unit_price_measurement.reference_value }}
+                                  {%- endif -%}
+                                  {{ current_variant.unit_price_measurement.reference_unit }}
+                                {%- endif -%}
+                                </span>
                             {%- endcapture -%}
 
                             <span class="product__unit-price--{{ section_id }}">{{ current_variant.unit_price | money }}</span>/{{ unit_price_base_unit }}
@@ -289,10 +385,16 @@
 
                         {%- unless description_style == 'full' -%}
                             <div class="product-single__description rte">
-                                {{ product.description }}
+                                {%- if product.metafields.custom.new_description -%}
+                                    {{ product.metafields.custom.new_description }}
+                                {%- else -%}
+                                    {{ product.description }}
+                                {%- endif -%}
                             </div>
 
-                            {%- render 'product-additional-content', product: product, section_id: section_id -%}
+                            {%- if additional_content -%}
+                                {%- render 'product-additional-content', product: product, section_id: section_id -%}
+                            {%- endif -%}
                         {%- endunless -%}
 
                         {%- if social -%}
@@ -324,8 +426,51 @@
                     {{ product.description }}
                 </div>
 
-                {%- render 'product-additional-content', product: product, section_id: section_id -%}
+                {%- if additional_content -%}
+                    {%- render 'product-additional-content', product: product, section_id: section_id -%}
+                {%- endif -%}
+            {%- endif -%}
+
+            {%- if product_footer -%}
+                {%- render 'product-footer', product: product, section_id: section_id -%}
             {%- endif -%}
         </div>
     </div>
 </div>
+
+<style>
+    .list-style-inline li {
+        display: inline-block;
+        margin: 0 1rem 0 0;
+    }
+    .ratings__group {
+        display: flex;
+        justify-content: flex-start;
+    }
+    .ratings__stars {
+        position: relative;
+        display: inline-block;
+        margin-right: 1.25rem;
+    }
+    .ratings__stars span.fa {
+        padding-right: .2rem;
+    }
+    .ratings__group .star_rating {
+        font-weight: bold;
+    }
+    .ratings__group .ratings_count {
+        font-size: .9rem;
+    }
+    .ratings__open {
+        overflow: hidden;
+        white-space: nowrap;
+    }
+    .ratings__solid {
+        position: absolute;
+        top: 0;
+        left: 0;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+</style>

@@ -56,6 +56,10 @@
         {%- endfor -%}
     </select>
 
+    {% if product.metafields.custom.sibling_products %}
+        {% render "sibling-product-snippet" %}
+    {%- endif -%}
+
     <div class="product__quantity__button">
 
         {%- if settings.quantity_enable -%}

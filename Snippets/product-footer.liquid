@@ -1,0 +1,197 @@
+{%- liquid
+    if product
+        assign section_id = section_id | append: '-' | append: product.id
+    endif
+
+
+-%}
+
+    <div id="product-footer" class="collapsibles-wrapper collapsibles-wrapper--border-bottom">
+
+            <div class="row-full green">
+                <div class="page-width">
+
+                    <div class="inner-bg">
+                        <div class="grid grid--smallX grid--matched-height">
+                            <div class="grid__item medium-up--two-thirds">
+
+                                <div class="still-have-questions">
+                                    <div class="inner">
+                                        <div class="head">Still Have Questions?&nbsp;</div>
+                                        <div class="link"><a href="/pages/contact-us" target="_blank">Contact Us</a>, our customer service team is ready to help!</div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="grid__item medium-up--one-third">
+                                <div style="text-align: left;"><img alt="" src="https://cdn.shopify.com/s/files/1/0012/4754/3384/files/secure-checkout_480x480.png?v=1613166176"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+    </div>
+
+<style>
+    #product-footer {
+        margin-top: 45px;
+    }
+    .page-content--product {
+        padding-bottom: 0 !important;
+    }
+
+    #shopify-section-product-section-albutrix .collapsibles-wrapper--border-bottom {
+        margin-top: 40px;
+    }
+
+    ul.hang-bullets {
+        margin-left: 22px;
+    }
+    ul.hang-bullets li {
+        margin-bottom:10px;
+        position:relative;
+        padding-left:10px;
+        font-size: .85rem;
+    }
+    ul.hang-bullets li span {
+        position: absolute;
+        left: -20px;
+        top: 0px;
+        bottom: 0px;
+    }
+
+    .product-single__description-full {
+        margin: 45px 0;
+    }
+
+    .collapsible-trigger-btn {
+        font-size: 1.1rem;
+    }
+
+    .pdp-h2 {
+        text-align: center;
+        font-size: 20px;
+        line-height: 30px;
+        font-weight: 600;
+    }
+
+    .pdp-h3 {
+        text-align: center;
+        font-size: 18px;
+        line-height: 28px;
+        font-weight: 600;
+    }
+
+    @media (min-width:769px) {
+        .pdp-h2 {
+            font-size: 24px;
+        }
+
+        .pdp-h3 {
+            text-align: center;
+            font-size: 21px;
+            line-height: 28px;
+            font-weight: 600;
+        }
+    }
+
+
+
+    .still-have-questions .head {
+        color: #0a7c3e;
+        font-size: 1.4rem;
+    }
+
+    .still-have-questions a {
+        text-decoration: underline;
+    }
+
+    .flex-images {
+        display: flex;
+        margin: 0 40px;
+        gap: 40px;
+        padding: 15px 0;
+        justify-content: center;
+    }
+    .flex-images img {
+        width: 100%;
+        max-height: 70px;
+    }
+
+    .grid--matched-height .grid__item {
+        margin-bottom: 15px;
+    }
+
+    @media (min-width:769px) {
+        .grid--matched-height {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 0 !important;
+        }
+
+        .grid--matched-height .grid__item {
+            margin-bottom: 0;
+        }
+    }
+
+
+    .inner-bg {
+        height: 100%;
+        background: #fff;
+        padding: 15px;
+        border-radius: 15px;
+        border: 2px solid #c9c9c9;
+    }
+
+    .row-full {
+        width: 100vw;
+        position: relative;
+        margin-left: -50vw;
+        margin-top: 0px;
+        padding: 30px 0;
+        left: 50%;
+    }
+
+    .row-full.gray {
+        background-color: #c0c0c0;
+        border-top: 2px solid #fff;
+        background-image: linear-gradient(to bottom, #c0c0c0, #cccccc, #d7d7d7, #e3e3e3, #efefef, #efefef, #efefef, #efefef, #e3e3e3, #d7d7d7, #cccccc, #c0c0c0);
+
+    }
+
+    .row-full.blue {
+        background-color: #a1a6ef;
+        background-image: linear-gradient(to bottom, #a1a6ef, #aeb2f2, #bcbff5, #c9cbf8, #d6d8fb, #d6d8fb, #d6d8fb, #d6d8fb, #c9cbf8, #bcbff5, #aeb2f2, #a1a6ef);;
+        border-top: 2px solid #fff;
+    }
+
+    .row-full.green {
+        background-color: #0a7c3e;
+        background-image: linear-gradient(to bottom, #0a7c3e, #2e8c53, #469d68, #5dad7d, #74be93, #74be93, #74be93, #74be93, #5dad7d, #469d68, #2e8c53, #0a7c3e);;
+        border-top: 2px solid #fff;
+    }
+
+    .row-full .section-header {
+        margin-bottom: 15px;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        font-size: 1.2rem;
+    }
+
+    .row-full .section-header > * {
+        margin-bottom: 0;
+    }
+
+    .row-full .section-content {
+        font-size: 15px;
+    }
+
+    .row-full .section-content p {
+        font-size: 15px;
+        margin-bottom: 7px;
+    }
+
+</style>

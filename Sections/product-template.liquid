@@ -12,6 +12,8 @@
         image_container_width: section.settings.image_size,
         section_id: product.id,
         social: section.settings.social_enable,
+        additional_content: section.settings.additional_content_enable,
+        product_footer: section.settings.product_footer_enable,
         isModal: isModal,
         thumbnail_position: section.settings.thumbnail_position,
         thumbnail_arrows: section.settings.thumbnail_arrows,
@@ -27,6 +29,14 @@
         </div>
     </div>
 {%- endif -%}
+
+{% if section.settings.back_to_collection_enable and collection %}
+    <div class="text-center page-content page-content--bottom">
+        <a href="{% if collection.handle == 'frontpage' %}/{% else %}{{ collection.url }}{% endif %}" class="btn btn--small return-link">
+            <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon--wide icon-arrow-left" viewBox="0 0 50 15"><path d="M50 5.38v4.25H15V15L0 7.5 15 0v5.38z"/></svg> {{ 'products.general.collection_return' | t: collection: collection.title }}
+        </a>
+    </div>
+{% endif %}
 
 {% schema %}
 {
@@ -52,6 +62,24 @@
 "type": "checkbox",
 "id": "social_enable",
 "label": "Enable social sharing",
+"default": true
+},
+{
+"type": "checkbox",
+"id": "additional_content_enable",
+"label": "Enable additional content",
+"default": true
+},
+{
+"type": "checkbox",
+"id": "product_footer_enable",
+"label": "Enable product footer",
+"default": false
+},
+{
+"type": "checkbox",
+"id": "back_to_collection_enable",
+"label": "Enable back to collection button",
 "default": true
 },
 {

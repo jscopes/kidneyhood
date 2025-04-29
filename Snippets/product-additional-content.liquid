@@ -17,7 +17,7 @@
 -%}
 
 {%- if settings.product_content_1 != blank or settings.product_content_2 != blank or settings.product_content_3 != blank or settings.product_contact or reviews_as_tab or has_custom_tabs -%}
-    <div class="collapsibles-wrapper collapsibles-wrapper--border-bottom">
+    <div id="product-aditional-content" class="mt-5 collapsibles-wrapper collapsibles-wrapper--border-bottom">
 
         {%- for tag in product.tags -%}
             {%- if tag contains '_tab' -%}
