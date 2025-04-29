@@ -1,3 +1,39 @@
+/*-- custom fonts --*/
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap');
+
+.lexend-200 {
+   font-family: "Lexend", sans-serif;
+   font-optical-sizing: auto;
+   font-weight: 200;
+   font-style: normal;
+ }
+.lexend-400 {
+   font-family: "Lexend", sans-serif;
+   font-optical-sizing: auto;
+   font-weight: 400;
+   font-style: normal;
+ }
+.lexend-600 {
+   font-family: "Lexend", sans-serif;
+   font-optical-sizing: auto;
+   font-weight: 600;
+   font-style: normal;
+ }
+.lexend-800 {
+   font-family: "Lexend", sans-serif;
+   font-optical-sizing: auto;
+   font-weight: 800;
+   font-style: normal;
+ }
+.lexend-900 {
+   font-family: "Lexend", sans-serif;
+   font-optical-sizing: auto;
+   font-weight: 900;
+   font-style: normal;
+ }
+
+
+
 /*-- bootstrap-4-utilities-classes --*/
 /*-- float utilities --*/
 .float-left {
@@ -1289,6 +1325,12 @@
   }
 }
 
+.text-size-75 {
+  font-size: .75rem;
+}
+.text-size-90 {
+  font-size: .90rem;
+}
 .text-size-1 {
   font-size: 1rem;
 }
@@ -2532,4 +2574,35 @@ table.compare-table th {
     .line-clamp:after {
         display: none;
     }
+}
+
+
+.text-button {
+  color: blue;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+}
+
+.big-stats {
+  margin-bottom: 0 !important;
+}
+.stat-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 17px;
+}
+.stat-group .stat-num {
+  font-family: "Lexend", sans-serif;
+  font-weight: 900;
+  color: #0a7c3e;
+  font-size: 60px;
+  line-height: 60px;
+  margin-bottom: 3px;
+}
+.stat-group .stat-text {
+  font-family: "Lexend", sans-serif;
+  font-weight: 500;
+  font-size: 17px;
+  line-height: 21px;
 }
