@@ -45,7 +45,7 @@
         </div>
         {%- if section.settings.button_label != blank and section.settings.button_link != blank -%}
             <div class="text-center bottom-button">
-                <a href="{{ section.settings.button_link }}" class="btn btn-sm-100">
+                                                                                                                  <a href="{{ section.settings.button_link }}" id="{{ section.settings.button_id }}" class="btn btn-sm-100">
                     {{ section.settings.button_label }}
                 </a>
             </div>
@@ -96,6 +96,11 @@
 "type": "url",
 "id": "button_link",
 "label": "Button link"
+},
+{
+                                           "type": "text",
+"id": "button_id",
+"label": "Button ID"
 },
 {
 "type": "color",
