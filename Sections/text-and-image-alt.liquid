@@ -63,11 +63,11 @@
             <div class="page-width">
                 <div class="featured-row-alt__button-row text-center">
                     {%- if section.settings.button_kltarget != blank -%}
-                        <a href="{{ section.settings.button_link }}" class="btn {{ section.settings.button_class }}" data-kl-target="{{ section.settings.button_kltarget }}">
+                        <a href="{{ section.settings.button_link }}" id="{{ section.settings.button_id }}" class="btn {{ section.settings.button_class }}" data-kl-target="{{ section.settings.button_kltarget }}">
                             {{ section.settings.button_label }}
                         </a>
                     {%- else -%}
-                        <a href="{{ section.settings.button_link }}" class="btn {{ section.settings.button_class }}">
+                        <a href="{{ section.settings.button_link }}" id="{{ section.settings.button_id }}" class="btn {{ section.settings.button_class }}">
                             {{ section.settings.button_label }}
                         </a>
                     {%- endif -%}
@@ -126,6 +126,11 @@
 "type": "url",
 "id": "button_link",
 "label": "Button link"
+},
+{
+"type": "text",
+"id": "button_id",
+"label": "Button ID"
 },
 {
 "type": "text",

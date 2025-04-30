@@ -6,8 +6,8 @@
             data-section-type="collection-template">
 
 
-        <div class="row-full gray">
-            <div class="page-width textImageBanner-block" style="background: {{ section.settings.outerBgColor }}; padding: {{ section.settings.outerBgPadding }}px;" >
+        <div class="row-full {{ section.settings.klass }}">
+            <div class="page-width textImageBanner-block" style="background: {{ section.settings.outerBgColor }}; padding: {{ section.settings.outerBgPaddingY }}px {{ section.settings.outerBgPaddingX }}px;" >
 
                 {%- if section.settings.title != blank -%}
                         <div class="section-header{% if section.settings.view_all %}{% unless settings.type_headers_align_text %} section-header--with-link{% endunless %}{% endif %}">
@@ -55,7 +55,7 @@
                                 <div class="subheading text-center">{{ section.settings.subtitle }}</div>
                             {%- endif -%}
                             {%- if section.settings.text != blank -%}
-                                <div class="rte textcontent">{{ section.settings.text }}</div>
+                                <div class="rte textcontent" style="font-size: {{ section.settings.font_size }}px;">{{ section.settings.text }}</div>
                             {%- endif -%}
                             </div>
                         </div>
@@ -80,6 +80,12 @@
 "settings": [
 {
 "type": "text",
+"id": "klass",
+"label": "CSS Class",
+"default": "gray"
+},
+{
+"type": "text",
 "id": "title",
 "label": "Heading",
 "default": "Text and Image Title"
@@ -96,11 +102,21 @@
 },
 {
 "type": "range",
-"id": "outerBgPadding",
-"label": "Outer Padding",
+"id": "outerBgPaddingX",
+"label": "Outer Padding X-Axis",
 "default": 5,
 "min": 0,
-"max": 30,
+"max": 40,
+"step": 1,
+"unit": "px"
+},
+{
+"type": "range",
+"id": "outerBgPaddingY",
+"label": "Outer Padding Y-Axis",
+"default": 5,
+"min": 0,
+"max": 40,
 "step": 1,
 "unit": "px"
 },
@@ -115,7 +131,7 @@
 "label": "Inner Padding X-Axis",
 "default": 5,
 "min": 0,
-"max": 30,
+"max": 40,
 "step": 1,
 "unit": "px"
 },
@@ -125,7 +141,7 @@
 "label": "Inner Padding Y-Axis",
 "default": 5,
 "min": 0,
-"max": 30,
+"max": 40,
 "step": 1,
 "unit": "px"
 },
@@ -135,7 +151,7 @@
 "label": "Inner Border Radius",
 "default": 0,
 "min": 0,
-"max": 30,
+"max": 40,
 "step": 1,
 "unit": "px"
 },
@@ -151,7 +167,7 @@
 "label": "Image width",
 "default": 500,
 "min": 100,
-"max": 500,
+"max": 700,
 "step": 10,
 "unit": "px"
 },
@@ -160,6 +176,16 @@
 "id": "subtitle",
 "label": "Subheading",
 "default": "Improved"
+},
+{
+"type": "range",
+"id": "font_size",
+"label": "Text Size",
+"default": 20,
+"min": 12,
+"max": 28,
+"step": 1,
+"unit": "px"
 },
 {
 "type": "richtext",
@@ -200,18 +226,6 @@
 {% endschema %}
 
 <style>
-    .textImageBanner-blockX .subheading {
-        font-weight: bold;
-        font-size: 1.2rem;
-        margin-bottom: 5px;
-    }
-    .textImageBanner-blockX .textcontent {
-        font-size: .9rem;
-    }
-
-
-
-
     .textImageBanner-content {
         position: relative;
     }
@@ -227,7 +241,7 @@
     }
 
     .textImageBanner-inner > * {
-        flex: 0 0 50%;
+        flex: 1 1 50%;
     }
 
     .textImageBanner-text {

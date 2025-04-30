@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <div class="guaranteeContent-block" style="background: {{ section.settings.guaranteeBgColor }};" class="{% if section.settings.guaranteeImage %} has-image{% endif %}">
-<div class="guaranteeContent-block-inner" style="background: {{ section.settings.guaranteeInnerBgColor }};">
+<div class="guaranteeContent-block-inner" style="background-color: {{ section.settings.guaranteeInnerBgColor }}; border: {{ section.settings.guaranteeBorderWidth }}px solid {{ section.settings.guaranteeBorderColor }}; border-radius: {{ section.settings.guaranteeBorderRadius }}px;">
     {%- if section.settings.guaranteeImage -%}
         <div class="guaranteeContentdiv guaranteeContentdivimage">
             <img src="{{ section.settings.guaranteeImage | img_url: 'original' }}" alt="{{ section.settings.guaranteeTitle }}" />
@@ -24,10 +24,6 @@
 "name": "Guarantee Content",
 "settings": [
 {
-"type": "header",
-"content": "Money Back Guarantee"
-},
-{
 "type": "color",
 "id": "guaranteeBgColor",
 "label": "Guarantee BG Color"
@@ -35,7 +31,34 @@
 {
 "type": "color",
 "id": "guaranteeInnerBgColor",
-"label": "Guarantee Inner BG Color"
+"label": "Guarantee Inner BG Color",
+"default": "rgba(0,0,0,0)"
+},
+{
+"type": "range",
+"id": "guaranteeBorderWidth",
+"label": "Guarantee Border Width",
+"default": 0,
+"min": 0,
+"max": 10,
+"step": 1,
+"unit": "px"
+},
+{
+"type": "range",
+"id": "guaranteeBorderRadius",
+"label": "Guarantee Border Radius",
+"default": 0,
+"min": 0,
+"max": 30,
+"step": 1,
+"unit": "px"
+},
+{
+"type": "color",
+"id": "guaranteeBorderColor",
+"label": "Guarantee Border Color",
+"default": "rgba(0,0,0,0)"
 },
 {
 "type": "image_picker",

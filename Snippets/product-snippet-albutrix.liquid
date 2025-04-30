@@ -118,7 +118,7 @@
 
                         {%- if product.metafields.custom.new_description -%}
                             <div class="grid-product__title grid-product__short_title">
-                                <p>Shop {{ product.metafields.custom.new_description }}</p>
+                                <p>{{ product.metafields.custom.new_description }}</p>
                             </div>
                         {%- elsif product.metafields.custom.short_description -%}
                             <div class="grid-product__title grid-product__short_title">
@@ -270,6 +270,7 @@
                               scripts that cause slower load times and false statistics.
                               Quick view modals request these on-demand.
                             {% endcomment %}
+
                             {%- render 'product-form-albutrix',
                                     section_id: section_id,
                                     product: product,

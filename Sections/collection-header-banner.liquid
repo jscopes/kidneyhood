@@ -1,0 +1,103 @@
+
+<div id="CollectionHeaderSection" data-section-id="{{ section.id }}" data-section-type="collection-header">
+
+    <div class="collection_header_banner">
+            <div class="collection_header_banner__content">
+                <div class="page-width">
+                    <div class="grid grid--uniform flex-grid justify-center">
+                        <div class="grid__item medium-up--five-eighths small--one-whole flex-wrap">
+                            <div class="collection_header_banner__text">
+                                <h1>
+                                    {{ collection.title }}
+                                </h1>
+                                {%- if section.settings.intro_text != blank -%}
+                                    <div class="rte collection_banner__description">{{ section.settings.intro_text }}</div>
+                                {%- else -%}
+                                    {%- if collection.description != blank -%}
+                                        <div class="rte collection_banner__description">{{ collection.description }}</div>
+                                    {%- endif -%}
+                                {%- endif -%}
+                            </div>
+
+                        </div>
+                        <div class="grid__item medium-up--three-eighths small--hide">
+                            {% if collection.metafields.custom.hero_inset_image != blank %}
+                                <div class="collection_header_banner__inset">
+                                    <img src="{{ collection.metafields.custom.hero_inset_image | img_url: "original" }}" alt="" />
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+    </div>
+</div>
+
+
+<style>
+    .collection_header_banner {
+        position: relative;
+        border-bottom: 3px solid #2f358d;
+    }
+    .collection_header_banner__content {
+        {% if collection.metafields.custom.hero_banner_image != blank %}
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-image: url('{{ collection.metafields.custom.hero_banner_image | img_url: "original" }}');
+        {% endif %}
+    }
+
+    .collection_header_banner__inset {
+    }
+    .collection_header_banner__text {
+        padding: 30px;
+        background-color: rgb(255,255,255,.3);
+        border-radius: 10px;
+    }
+    .collection_header_banner__content h1 {
+        font-family: Lexend, sans-serif;
+        font-weight: 700;
+        color: #000;
+        font-size: 44px;
+        line-height: 1.1;
+        margin-bottom: 20px;
+    }
+    .collection_banner__description {
+        font-family: Lexend, sans-serif;
+        font-weight: normal;
+        color: #000;
+        font-size: 15px;
+        line-height: 1.35;
+        margin-bottom: 10px;
+    }
+    .collection_banner__description > p {
+        margin-bottom: 7px;
+    }
+    .flex-wrap {
+        display: flex;
+        align-items: center;
+        padding-top: 15px;
+        padding-bottom: 15px;
+    }
+    .collection_header_banner__content .grid__item {
+        margin-bottom: 0 !important;
+    }
+
+</style>
+
+{% schema %}
+{
+"name": "Collection header banner",
+"settings": [
+        {
+        "type": "richtext",
+        "id": "intro_text",
+        "label": "Intro Text",
+        "default": "<p>Pair large text with a full-width image to draw attention to an important detail of your brand or product line.</p>"
+        }
+    ]
+}
+{% endschema %}
+

@@ -6,6 +6,11 @@
                 <h2>{{ section.settings.title }}</h2>
             </div>
         {%- endif -%}
+        {%- if section.settings.subtitle != blank -%}
+            <div class="section-header text-{{ section.settings.align_text }}">
+                <h3>{{ section.settings.subtitle }}</h3>
+            </div>
+        {%- endif -%}
 
         <div class="grid{% unless section.blocks.size == 5 %} grid--uniform{% endunless %} grid--flush-bottom">
             {%- liquid
@@ -86,6 +91,11 @@
 "type": "text",
 "id": "title",
 "label": "Heading"
+},
+{
+"type": "text",
+"id": "subtitle",
+"label": "Subheading"
 },
 {
 "type": "select",
