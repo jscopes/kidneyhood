@@ -1,0 +1,133 @@
+{%- style -%}
+    .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+    }
+
+    @media screen and (min-width: 769px) {
+    .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+    }
+{%- endstyle -%}
+
+{%- if section.settings.divider -%}<div class="section--divider">{%- endif -%}
+
+    <div
+            id="CollectionSection-{{ section.id }}"
+            class="section-{{ section.id }}-padding"
+            data-section-id="{{ section.id }}"
+            data-section-type="collection-template">
+        {%- if section.settings.title != blank -%}
+            <div class="page-width">
+                <div class="section-header{% if section.settings.view_all %}{% unless settings.type_headers_align_text %} section-header--with-link{% endunless %}{% endif %}">
+                    <h2 class="section-header__title text-center">
+                        {{ section.settings.title }}
+                    </h2>
+                    {% if section.settings.subtitle != blank %}
+                        <div class="subheading text-center">{{ section.settings.subtitle }}</div>
+                    {% endif %}
+                </div>
+            </div>
+        {%- endif -%}
+        {%- if section.settings.button_label != blank and section.settings.button_link != blank %}
+            <div class="page-width">
+                <div class="featured-row-alt__button-row text-center">
+                    {%- if section.settings.button_kltarget != blank -%}
+                        <a href="{{ section.settings.button_link }}" id="{{ section.settings.button_id }}" class="btn {{ section.settings.button_class }}" data-kl-target="{{ section.settings.button_kltarget }}">
+                            {{ section.settings.button_label }}
+                        </a>
+                    {%- else -%}
+                        <a href="{{ section.settings.button_link }}" id="{{ section.settings.button_id }}" class="btn {{ section.settings.button_class }}">
+                            {{ section.settings.button_label }}
+                        </a>
+                    {%- endif -%}
+                </div>
+            </div>
+        {% endif -%}
+    </div>
+
+    {%- if section.settings.divider -%}</div>{%- endif -%}
+
+{% schema %}
+{
+"name": "Text Head and Subhead",
+"settings": [
+{
+"type": "text",
+"id": "title",
+"label": "Heading",
+"default": "Text Heading"
+},
+{
+"type": "text",
+"id": "subtitle",
+"label": "Subheading",
+"default": "Text Subheading"
+},
+{
+"type": "text",
+"id": "button_label",
+"label": "Button label",
+"default": "Optional button"
+},
+{
+"type": "url",
+"id": "button_link",
+"label": "Button link"
+},
+{
+"type": "text",
+"id": "button_id",
+"label": "Button ID"
+},
+{
+"type": "text",
+"id": "button_class",
+"label": "Button CSS class"
+},
+{
+"type": "text",
+"id": "button_kltarget",
+"label": "Button Klaviyo Target"
+},
+{
+"type": "checkbox",
+"id": "divider",
+"label": "Show section divider",
+"default": false
+},
+{
+"type": "header",
+"content": "Section Padding"
+},
+{
+"type": "range",
+"id": "padding_top",
+"min": 0,
+"max": 100,
+"step": 4,
+"unit": "px",
+"label": "Padding top",
+"default": 36
+},
+{
+"type": "range",
+"id": "padding_bottom",
+"min": 0,
+"max": 100,
+"step": 4,
+"unit": "px",
+"label": "Padding bottom",
+"default": 36
+}
+],
+"presets": [
+{
+"name": "Text Head and Subhead",
+"category": "Text"
+}
+]
+}
+{% endschema %}
