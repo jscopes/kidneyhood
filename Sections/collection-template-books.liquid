@@ -1,0 +1,500 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+{%- assign paginate_by = section.settings.rows_per_page -%}
+
+{%- paginate collection.products by paginate_by -%}
+
+    <div
+            id="CollectionSection"
+            data-section-id="{{ section.id }}"
+            data-section-type="collection-template">
+
+        {%- if section.settings.description_position == 'top' -%}
+            {%- if collection.description != blank -%}
+                <div class="rte">
+                    {{ collection.description }}
+                </div>
+                <hr class="hr--clear hr--small">
+            {%- endif -%}
+        {%- endif -%}
+
+
+        <div class="collection-filter">
+            {%- assign current_filter_size = current_tags | size -%}
+            <div class="collection-filter__item collection-filter__item--drawer">
+                <button
+                        type="button"
+                        class="js-drawer-open-collection-filters btn btn--tertiary{% unless current_filter_size == 0 %} btn--tertiary-active{% endunless %}"
+                        aria-controls="FilterDrawer">
+                    <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-filter" viewBox="0 0 64 64"><path d="M48 42h10M48 42a5 5 0 1 1-5-5 5 5 0 0 1 5 5zM7 42h31M16 22H6M16 22a5 5 0 1 1 5 5 5 5 0 0 1-5-5zM57 22H26"/></svg>
+                    {{ 'collections.filters.title_tags' | t }}
+                    {%- if current_filter_size > 0 -%}
+                        ({{ current_filter_size }})
+                    {%- endif -%}
+                </button>
+            </div>
+
+            <div class="collection-filter__item collection-filter__item--count small--hide">
+                {%- if section.settings.enable_collection_count -%}
+                    {{ 'collections.general.items_with_count' | t: count: collection.products_count }}
+                {%- endif -%}
+            </div>
+
+            <div class="collection-filter__item collection-filter__item--sort">
+                <div class="collection-filter__sort-container">
+                    {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+                    <label for="SortBy" class="hidden-label">{{ 'collections.sorting.title' | t }}</label>
+                    <select name="SortBy" id="SortBy" data-default-sortby="{{ collection.default_sort_by }}">
+                        <option value="title-ascending"{% if sort_by == collection.default_sort_by %} selected="selected"{% endif %}>{{ 'collections.sorting.title' | t }}</option>
+                        {%- for option in collection.sort_options -%}
+                            <option value="{{ option.value }}"{% if option.value == sort_by %} selected="selected"{% endif %}>{{ option.name }}</option>
+                        {%- endfor -%}
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        {%- if section.settings.enable_collection_count -%}
+            <p class="medium-up--hide text-center" data-scroll-to>{{ 'collections.general.items_with_count' | t: count: collection.products_count }}</p>
+        {%- endif -%}
+
+            <div class="grid grid--uniform grid--collection{% if section.settings.mobile_flush_grid %} small--grid--flush{% endif %}"{% unless section.settings.enable_collection_count %} data-scroll-to{% endunless %}>
+
+                {%- for product in collection.products -%}
+                    {%- liquid
+                        assign on_sale = false
+                        if product.compare_at_price > product.price
+                            assign on_sale = true
+                        endif
+
+                        assign sold_out = true
+                        if product.available
+                            assign sold_out = false
+                        endif
+
+                        assign product_tags = product.tags | join: ','
+                        assign has_custom_label = false
+                        if product_tags contains '_label_'
+                            for tag in product.tags
+                                if tag contains '_label_'
+                                    assign tag_starts_with = tag | slice: 0
+                                    if tag_starts_with == '_'
+                                        assign has_custom_label = true
+                                        assign custom_label = tag | replace: '_label_', ''
+                                    endif
+                                endif
+                            endfor
+                        endif
+
+                        assign fixed_aspect_ratio = false
+                        comment
+                        settings.product_grid_image_size == 'square'
+                        endcomment
+                        unless settings.product_grid_image_size == 'natural'
+                            assign fixed_aspect_ratio = true
+                        endunless
+
+                        assign preview_image = product.featured_media.preview_image
+                        assign img_url = preview_image | img_url: '1x1' | replace: '_1x1.', '_{width}x.'
+
+                    -%}
+
+                    <div class="grid__item grid-product grid-book-product {% if settings.quick_shop_enable and sold_out == false %} grid-product__has-quick-shop{% endif %}" data-product-handle="{{ product.handle }}">
+                        <div class="grid-product__content">
+                            <div class="grid grid--uniform">
+                                <div class="grid__item one-whole medium-up--one-quarter">
+                                    <div class="grid_image_wrap">
+                                        <a id="{{ link_id_prefix | append: product.handle }}" href="{{ product.url | within: collection }}" class="grid-product__link{% if sold_out %} grid-product__link--disabled{% endif %}">
+                                            <div class="grid-product__image-mask">
+                                                {%- if settings.quick_shop_enable and sold_out == false -%}
+                                                    <div class="quick-product__btn quick-product__btn--not-ready js-modal-open-quick-modal-{{ product.id }} small--hide" data-product-id="{{ product.id }}">
+                                                        <span class="quick-product__label">{{ settings.quick_shop_text }}</span>
+                                                    </div>
+                                                {%- endif -%}
+                                                {%- if fixed_aspect_ratio -%}
+                                                    <div
+                                                            class="grid__image-ratio grid__image-ratio--{{ settings.product_grid_image_size }} lazyload"
+                                                            data-bgset="{% render 'bgset', image: preview_image %}"
+                                                            data-sizes="auto">
+                                                    </div>
+                                                {%- else -%}
+                                                    <div class="image-wrap"
+                                                         style="height: 0; padding-bottom: {{ 100 | divided_by: preview_image.aspect_ratio }}%;"
+                                                    >
+                                                        <img class="grid-product__image lazyload"
+                                                             data-src="{{ img_url }}"
+                                                             data-widths="[180, 360, 540, 720, 900, 1080]"
+                                                             data-aspectratio="{{ preview_image.aspect_ratio }}"
+                                                             data-sizes="auto"
+                                                             alt="{{ preview_image.alt | escape }}">
+                                                        <noscript>
+                                                            <img class="grid-product__image lazyloaded"
+                                                                 src="{{ preview_image | img_url: '400x' }}"
+                                                                 alt="{{ preview_image.alt | escape }}">
+                                                        </noscript>
+                                                    </div>
+                                                {%- endif -%}
+
+                                                {%- unless sold_out -%}
+                                                    {%- if settings.product_hover_image and product.media.size > 1 -%}
+                                                        {%- for media in product.media offset: 1 limit: 1 -%}
+                                                            {%- assign second_image = media.preview_image -%}
+                                                        {%- endfor -%}
+                                                        <div
+                                                                class="grid-product__secondary-image small--hide lazyload"
+                                                                data-bgset="{% render 'bgset', image: second_image %}"
+                                                                data-sizes="auto">
+                                                        </div>
+                                                    {%- endif -%}
+                                                {%- endunless -%}
+
+                                                {%- if settings.collection_color_swatches -%}
+                                                    {%- assign swatch_trigger = 'products.general.color_swatch_trigger' | t | downcase-%}
+                                                    {%- for option in product.options_with_values -%}
+                                                        {%- liquid
+                                                            assign option_name = option.name | downcase
+                                                            assign is_color = false
+                                                            if option_name contains swatch_trigger
+                                                                assign is_color = true
+                                                            elsif swatch_trigger == 'color' and option_name contains 'colour'
+                                                                assign is_color = true
+                                                            endif
+                                                        -%}
+                                                        {%- if is_color -%}
+                                                            {%- assign option_index = forloop.index0 -%}
+                                                            {%- assign values = '' -%}
+                                                            {%- for variant in product.variants -%}
+                                                                {%- assign value = variant.options[option_index] %}
+                                                                {%- unless values contains value -%}
+                                                                    {%- liquid
+                                                                        assign values = values | join: ','
+                                                                        assign values = values | append: ',' | append: value
+                                                                        assign values = values | split: ','
+                                                                    -%}
+
+                                                                    {%- if variant.image -%}
+                                                                        <div
+                                                                                class="grid-product__color-image grid-product__color-image--{{ variant.id }} small--hide">
+                                                                        </div>
+                                                                    {%- endif -%}
+                                                                {%- endunless -%}
+                                                            {%- endfor -%}
+                                                        {%- endif -%}
+                                                    {%- endfor -%}
+                                                {%- endif -%}
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="grid__item one-whole medium-up--three-quarters">
+                                    <a id="{{ link_id_prefix | append: product.handle }}" href="{{ product.url | within: collection }}" class="grid-product__link{% if sold_out %} grid-product__link--disabled{% endif %}">
+                                        <div class="product__title__group">
+                                            <div class="grid-product__title grid-product__title--{{ settings.type_product_style }} {% if truncate_long_names %}line-clamp{% endif %}">{{ product.title }}</div>
+                                            {%- if settings.vendor_enable -%}
+                                                <div class="grid-product__vendor">{{ product.vendor }}</div>
+                                            {%- endif -%}
+                                        </div>
+                                    </a>
+
+                                    <div class="product__info__group">
+                                        <ul class="list-style-none list-style-inline">
+                                            <li class="author__name">by {{ product.metafields.custom.author }}</li>
+                                            <li class="release__date">Release date {{ product.metafields.custom.release_date | date: "%b %d, %y" }}</li>
+                                        </ul>
+
+                                        {%- if product.metafields.custom.star_rating -%}
+                                            <div class="ratings__group">
+                                                <div class="ratings__stars">
+                                                    <div class="ratings__open">
+                                                        <span class="fa fa-star-o"></span><span class="fa fa-star-o"></span><span class="fa fa-star-o"></span><span class="fa fa-star-o"></span><span class="fa fa-star-o"></span>
+                                                    </div>
+                                                    <div class="ratings__solid" style="width:{{ product.metafields.custom.star_rating | divided_by: 5 | times: 100 }}%;">
+                                                        <span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="ratings__numbers">
+                                                    <span class="star_rating">{{ product.metafields.custom.star_rating }}</span> <span class="ratings_count">({{ product.metafields.custom.rating_count }})</span>
+                                                </div>
+                                            </div>
+                                        {%- endif -%}
+                                    </div>
+
+                                    <div class="product__description__group">
+                                        <div class="truncated-product-description">
+                                            {{ product.description | truncate: section.settings.desc_truncation }} <a href="{{ product.url | within: collection }}" class="read-more">(Read more)</a>
+                                        </div>
+                                    </div>
+
+                                    <div class="price__details__wrap">
+                                        <div class="grid-product__price">
+                                            {%- if on_sale -%}
+                                                <span class="visually-hidden">{{ 'products.general.regular_price' | t }}</span>
+                                                <span class="grid-product__price--original">{{ product.compare_at_price | money }}</span>
+                                                <span class="visually-hidden">{{ 'products.general.sale_price' | t }}</span>
+                                            {%- endif -%}
+                                            {%- if product.price_varies -%}
+                                                {%- assign price = product.price_min | money -%}
+                                                {{ 'products.general.from_text_html' | t: price: price }}
+                                            {%- else -%}
+                                                {{ product.price  | money }}
+                                            {%- endif -%}
+                                            {%- if on_sale -%}
+                                                {%- if settings.product_save_amount -%}
+                                                    {%- if settings.product_save_type == 'dollar' -%}
+                                                        {%- capture saved_amount -%}{{ product.compare_at_price | minus: product.price | money }}{%- endcapture -%}
+                                                    {%- else -%}
+                                                        {%- capture saved_amount -%}{{ product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round }}%{%- endcapture -%}
+                                                    {%- endif -%}
+                                                    <span class="grid-product__price--savings">
+                                                        {{ 'products.general.save_html' | t: saved_amount: saved_amount }}
+                                                    </span>
+                                                {%- endif -%}
+                                            {%- endif -%}
+
+                                            {%- assign product_variant = product.selected_or_first_available_variant -%}
+                                            {%- if product_variant.unit_price_measurement -%}
+                                                <div class="product__unit-price">
+                                                    {%- capture unit_price_base_unit -%}
+                                                        {%- if product_variant.unit_price_measurement -%}
+                                                            {%- if product_variant.unit_price_measurement.reference_value != 1 -%}
+                                                                {{ product_variant.unit_price_measurement.reference_value }}
+                                                            {%- endif -%}
+                                                            {{ product_variant.unit_price_measurement.reference_unit }}
+                                                        {%- endif -%}
+                                                    {%- endcapture -%}
+
+                                                    {{ product_variant.unit_price | money }}/{{ unit_price_base_unit }}
+                                                </div>
+                                            {%- endif -%}
+                                        </div>
+
+                                        <div>
+                                            <a href="{{ product.url | within: collection }}" class="btn">View More Details</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                {%- else -%}
+                    <div class="grid__item">
+                        <p>{{ 'collections.general.no_matches' | t }}</p>
+                    </div>
+                {%- endfor -%}
+
+            </div>
+
+        {%- if paginate.pages > 1 -%}
+            {%- render 'pagination', paginate: paginate -%}
+        {%- endif -%}
+
+        {%- if section.settings.description_position == 'bottom' -%}
+            {%- if collection.description != blank -%}
+                <hr class="hr--clear hr--small">
+                <div class="rte">
+                    {{ collection.description }}
+                </div>
+                <hr class="hr--clear hr--small">
+            {%- endif -%}
+        {%- endif -%}
+
+        {%- if settings.quick_shop_enable -%}
+            {%- for product in collection.products -%}
+                {%- if product.available -%}
+                    {%- render 'quick-shop-modal', product: product -%}
+                {%- endif -%}
+            {%- endfor -%}
+        {%- endif -%}
+    </div>
+
+{%- endpaginate -%}
+
+<style>
+    .grid-book-product {
+        margin-bottom: 0;
+        padding-top: 30px;
+        padding-bottom: 30px;
+        border-top: 1px solid gray;
+    }
+    .grid-book-product:first-child {
+        border-top: 0 none;
+    }
+    .product__title__group {
+        text-align: center;
+    }
+    .product__title__group .grid-product__title {
+        -webkit-hyphens: none;
+        hyphens: none;
+        word-break: keep-all;
+    }
+
+    .grid_image_wrap {
+        padding-left: 10%;
+        padding-right: 10%;
+        margin-bottom: 1.5rem;
+    }
+    .list-style-inline li {
+        display: inline-block;
+        margin: 0 1rem 0 0;
+    }
+    .ratings__group {
+        display: flex;
+        justify-content: flex-start;
+    }
+    .ratings__stars {
+        position: relative;
+        display: inline-block;
+        margin-right: 1.25rem;
+    }
+    .ratings__stars span.fa {
+        padding-right: .2rem;
+    }
+    .ratings__group .star_rating {
+        font-weight: bold;
+    }
+    .ratings__group .ratings_count {
+        font-size: .9rem;
+    }
+    .ratings__open {
+        overflow: hidden;
+        white-space: nowrap;
+    }
+    .ratings__solid {
+        position: absolute;
+        top: 0;
+        left: 0;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+    .product__description__group {
+        margin-bottom: 10px;
+        padding: 10px 0;
+    }
+    .product__description__group p {
+        margin-bottom: 8px;
+        line-height: 1.4;
+    }
+    .product__description__group .read-more {
+        font-size: 90%;
+        font-style: italic;
+        color: #0000ee;
+        text-decoration: underline;
+    }
+
+    .price__details__wrap {
+        text-align: center;
+    }
+    .price__details__wrap .grid-product__price {
+        font-size: 1.2rem;
+        margin: 0 0 .6rem 0;
+    }
+    .price__details__wrap .btn {
+        padding: 10px 24px;
+    }
+
+    @media (min-width: 551px) {
+        .grid_image_wrap {
+            padding-left: 15%;
+            padding-right: 15%;
+        }
+    }
+    @media (min-width: 769px) {
+        .grid_image_wrap {
+            padding-left: 0;
+            padding-right: 0;
+            margin-bottom: 0;
+        }
+        .product__title__group {
+            text-align: left;
+        }
+        .list-style-inline li {
+        }
+        .ratings__group {
+        }
+        .price__details__wrap {
+            display: flex;
+            align-items: center;
+            text-align: left;
+        }
+        .price__details__wrap .grid-product__price {
+            font-size: 1.2rem;
+            margin: 0 2rem 0 0;
+        }
+
+    }
+
+</style>
+
+{% schema %}
+{
+"name": "Collection pages",
+"settings": [
+{
+"type": "header",
+"content": "Subcollections"
+},
+{
+"type": "paragraph",
+"content": "Links to collections from your menu will appear here. [Learn more](https://archetypethemes.co/blogs/impulse/how-do-i-create-subcollections)"
+},
+{
+"type": "select",
+"id": "subcollection_style",
+"label": "Subcollection style",
+"default": "above",
+"options": [
+{
+"value": "above",
+"label": "Above products"
+},
+{
+"value": "below",
+"label": "Below products"
+},
+{
+"value": "none",
+"label": "None"
+}
+]
+},
+{
+"type": "header",
+"content": "Products"
+},
+{
+"type": "checkbox",
+"id": "enable_collection_count",
+"label": "Enable collection count",
+"default": false
+},
+{
+"type": "range",
+"id": "rows_per_page",
+"label": "Rows per page",
+"default": 7,
+"min": 3,
+"max": 20,
+"step": 1
+},
+{
+"type": "range",
+"id": "desc_truncation",
+"label": "Description Truncation",
+"default": 300,
+"min": 100,
+"max": 600,
+"step": 50
+},
+{
+"type": "checkbox",
+"id": "mobile_flush_grid",
+"label": "Flush grid on mobile",
+"default": false
+}
+]
+}
+{% endschema %}
