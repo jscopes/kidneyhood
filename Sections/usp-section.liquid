@@ -1,0 +1,157 @@
+{%- style -%}
+    .marquee {
+    overflow: hidden;
+    white-space: nowrap;
+    --speed: 30s;
+    }
+    .marquee__inner {
+    display: table;
+    width: 100%;
+    }
+
+    .marquee__item {
+    width: 33.3%;
+    display: table-cell;
+    vertical-align: middle;
+    }
+    .marquee__item img {
+    display: block;
+    }
+    .marquee__item p {
+    margin: 0;
+    font-weight: 500;
+    font-size: 14px;
+    }
+    .marquee-row div:first-child {
+    flex: 0 30px;
+    }
+    .marquee-row div {
+    flex: 1 auto;
+    }
+    .marquee-row {
+    display: flex;
+    gap: 0.8rem;
+    justify-content: center;
+    align-items: center;
+    max-width: fit-content;
+    margin: auto;
+    }
+
+    .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+    background-color: var(--bg-color);
+    }
+
+    @keyframes marquee {
+    0% {
+    transform: translateX(0);
+    }
+    100% {
+    transform: translateX(-100%);
+    }
+    }
+
+    @media screen and (min-width: 769px) {
+    .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+    }
+
+    @media (max-width: 768px) {
+    .marquee__inner {
+    animation: marquee var(--speed) linear infinite;
+    }
+    .usp-section .page-width {
+    padding: 0;
+    }
+    .marquee__item {
+    display: inline-block;
+    margin-right: 30px;
+    vertical-align: middle;
+    }
+    }
+{%- endstyle -%}
+
+<div class="section-{{ section.id }}-padding" style="--bg-color: {{ section.settings.background | default: '#000' }};">
+    <div class="page-width page-width-fit">
+        <div class="marquee">
+            <div class="marquee__inner">
+                {% for block in section.blocks %}
+                    <div class="marquee__item ">
+                        <div class="marquee-row">
+                            <div>
+                                <img src="{{ block.settings.image | img_url: '50x' }}" alt="{{ block.settings.image.alt }}">
+                            </div>
+                            <div>
+                                <p>{{ block.settings.title }}</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% schema %}
+{
+"name": "USP",
+"class": "usp-section",
+"settings": [
+{
+"type": "color",
+"id": "background",
+"label": "Background color"
+},
+{
+"type": "header",
+"content": "Section Padding"
+},
+{
+"type": "range",
+"id": "padding_top",
+"min": 0,
+"max": 100,
+"step": 4,
+"unit": "px",
+"label": "Padding top",
+"default": 36
+},
+{
+"type": "range",
+"id": "padding_bottom",
+"min": 0,
+"max": 100,
+"step": 4,
+"unit": "px",
+"label": "Padding bottom",
+"default": 36
+}
+],
+"blocks": [
+{
+"type": "usp",
+"name": "USP",
+"settings": [
+{
+"type": "image_picker",
+"id": "image",
+"label": "Image"
+},
+{
+"type": "text",
+"id": "title",
+"label": "Title"
+}
+]
+}
+],
+"presets": [
+{
+"name": "USP"
+}
+]
+}
+{% endschema %}
