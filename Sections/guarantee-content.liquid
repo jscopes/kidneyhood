@@ -1,3 +1,10 @@
+{%- liquid
+    assign showContactUs = false
+    if template == 'product.Albutrix25'
+        assign showContactUs = true
+    endif
+-%}
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <div class="guaranteeContent-block" style="background: {{ section.settings.guaranteeBgColor }};" class="{% if section.settings.guaranteeImage %} has-image{% endif %}">
@@ -15,6 +22,19 @@
             {{ section.settings.guaranteeDescription }}
         </div>
     </div>
+    {%- if showContactUs -%}
+        <div style="padding: 10px 0 0 0; text-align: center;">
+        <div class="guaranteeContactUs">
+            <div class="h3 mb-1 text-center lexend-600">
+                Still Have Questions?
+            </div>
+            <div class="section-content">
+                Our US-Based Support team is available to help. <a id="link-homeContact-contact" href="/pages/contact-us">Contact Us Now</a><br>
+                Phone: <a id="link-homeContact-tel" href="tel:1-800-441-1045">800-441-1045</a> | Email: <a id="link-homeContact-email" href="mailto:support@kidneyhood.org">support@kidneyhood.org</a>
+            </div>
+        </div>
+        </div>
+    {%- endif -%}
 </div>
 </div>
 
@@ -105,7 +125,6 @@
     }
     .guaranteeContent-block-inner {
         padding: 25px 5%;
-        display: flex;
     }
     .guaranteeContent-block .guaranteeContentdiv {
     }
