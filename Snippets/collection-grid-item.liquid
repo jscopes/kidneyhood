@@ -18,10 +18,22 @@
             assign title_output = collection.title | escape
         endif
     endif
+
+    if block.settings.button_id != blank
+        assign coll_link_id = block.settings.button_id | replace: 'btn-', 'link-'
+    else
+        assign coll_link_id = 'link-' | append: collection.title | escape | replace: ' ',''
+    endif
 -%}
 
 <div class="grid__item {{ grid_item_width }}">
-    <a href="{{ collection.url }}" class="collection-item collection-item--{{ settings.collection_grid_style }}" data-aos="row-of-{{ per_row }}">
+    {%- if block.settings.heading != blank -%}
+        <div class="collection-header">
+            <h3 class="h3 text-center">{{ block.settings.heading | escape }}</h3>
+        </div>
+    {%- endif -%}
+
+    <a id="{{ coll_link_id }}" href="{{ collection.url }}" class="collection-item collection-item--{{ settings.collection_grid_style }}" data-aos="row-of-{{ per_row }}">
 
         {%- liquid
             if settings.collection_grid_image == 'collection' and collection.image
@@ -51,12 +63,25 @@
             </noscript>
         {%- endif -%}
 
-        <span
-                class="collection-item__title collection-item__title--{{ settings.collection_grid_style }} collection-item__title--{{ settings.type_collection_font }} collection-item__title--{{ settings.collection_grid_text_align }}">
-      <span>
-        {{ title_output }}
-      </span>
-    </span>
-
+        <span class="collection-item__title collection-item__title--{{ settings.collection_grid_style }} collection-item__title--{{ settings.type_collection_font }} collection-item__title--{{ settings.collection_grid_text_align }}">
+          <span>
+            {{ title_output }}
+          </span>
+        </span>
     </a>
+
+    {%- if block.settings.button_label != blank -%}
+        <div class="collection-button-row">
+            <p class="text-center">{{ block.settings.description | escape }}</p>
+        </div>
+    {%- endif -%}
+
+    {%- if block.settings.button_label != blank and block.settings.button_link != blank -%}
+        <div class="text-center collection-button-row">
+            <a href="{{ block.settings.button_link }}" id="{{ block.settings.button_id }}" class="btn btn-sm-100">
+                {{ block.settings.button_label }}
+            </a>
+        </div>
+    {%- endif -%}
+
 </div>
