@@ -21,6 +21,7 @@
     }
 {%- endstyle -%}
 
+{%- if section.settings.divider -%}<div class="section--divider">{%- endif -%}
 <div class="section-{{ section.id }}-padding" style="--bg-color: {{ section.settings.background | default: '#000' }};">
     <div class="page-width">
         {%- if section.settings.title != blank -%}
@@ -52,6 +53,7 @@
         {%- endif -%}
     </div>
 </div>
+{%- if section.settings.divider -%}</div>{%- endif -%}
 
 <script>
     document.querySelectorAll('.player-embed .button-yt').forEach(e=> {
@@ -86,6 +88,12 @@
 "id": "title",
 "label": "Heading",
 "default": "Large image with text box"
+},
+{
+"type": "checkbox",
+"id": "divider",
+"label": "Show section divider",
+"default": false
 },
 {
 "type": "text",
