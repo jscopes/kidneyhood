@@ -3328,10 +3328,30 @@ padding:0
     margin:15px 0
 }
 
-@media only screen and (min-width:769px){
+.footer__disclaimer {
+    color: #000;
+    font-family: Lexend, sans-serif;
+    font-size: 11px;
+    font-weight: normal;
+    line-height: 1.2;
+    text-align: center;
+}
 
+.footer__copyright {
+    margin-bottom: 4rem;
+}
+
+@media only screen and (min-width:769px){
     .footer__logo{
-        margin:0 0 20px
+        margin:0 0 15px
+    }
+
+    .footer__disclaimer {
+        text-align: left;
+    }
+
+    .footer__copyright {
+        margin-bottom: 0;
     }
 }
 
@@ -11600,4 +11620,7 @@ p.custom-shortdescription {
     margin: 5px 0 0 0;
 }
 
-
+.outline-rounded {
+    border: 1px solid #8ca4af; /* #96b8c4 */
+    border-radius: 25px;
+}

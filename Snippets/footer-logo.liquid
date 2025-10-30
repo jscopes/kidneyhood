@@ -1,9 +1,4 @@
 {%- if block.settings.logo -%}
-    {%- style -%}
-        .footer__logo a {
-        height: {{ block.settings.desktop_logo_height }}px;
-        }
-    {%- endstyle -%}
     {%- assign footer_logo_size = block.settings.desktop_logo_height | prepend: 'x' -%}
     <div class="footer__logo">
         <a href="{{ routes.root_url }}">
@@ -11,3 +6,6 @@
         </a>
     </div>
 {%- endif -%}
+<div class="footer__disclaimer">
+    Any statements have not been evaluated by the Food and Drug Administration.
+</div>

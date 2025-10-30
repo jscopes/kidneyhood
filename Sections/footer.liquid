@@ -102,14 +102,13 @@
         {%- endif -%}
 
         {%- if section.settings.show_copyright -%}
-            <p class="footer__small-text">
+            <p class="footer__small-text footer__copyright">
                 &copy; {{ 'now' | date: '%Y' }} {{ shop.name }}
                 {%- if section.settings.copyright_text != blank -%}
                     {{ section.settings.copyright_text }}
                 {%- endif -%}
             </p>
         {%- endif -%}
-        <p class="footer__small-text"></p>
 
     </div>
 </footer>
