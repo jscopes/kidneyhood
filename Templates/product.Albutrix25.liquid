@@ -1,0 +1,356 @@
+{%- liquid
+    assign product_title = product.title
+    if product.metafields.custom.short_title
+        assign product_title = product.metafields.custom.short_title | append: product_title_extra
+    endif
+
+    assign product_subtitle = ''
+    if product.metafields.custom.stage
+        assign product_subtitle = product_subtitle | append: product.metafields.custom.stage
+    endif
+    if product.metafields.custom.gfr_range
+        assign product_subtitle = product_subtitle | append: ' &ndash; ' | append: product.metafields.custom.gfr_range
+    endif
+
+    assign use_dynamic_breadcrumbs = false
+
+%}
+
+<div id="CollectionHeaderSection" data-section-id="{{ section.id }}" data-section-type="collection-header">
+
+    <div class="collection_header_banner">
+        <div class="collection_header_banner__content" style="background-position: bottom center;">
+            <div class="page-width">
+                <div class="grid grid--uniform flex-grid">
+                    <div class="collection_header_banner__text">
+                        <h1 style="font-weight: 500; letter-spacing: 0; font-size: 42px;">
+                            {{ product_title }}
+                            {%- if product_subtitle != blank -%}
+                                <span style="font-weight: 300; font-size: 32px;">({{ product_subtitle }})</span>
+                            {%- endif -%}
+                        </h1>
+
+                        <nav class="breadcrumb" role="navigation" aria-label="breadcrumbs">
+                            {%- if use_dynamic_breadcrumbs -%}
+                                {%- capture collectionUrl -%}{{ routes.collections_url }}/{{ collection.handle }}{%- endcapture -%}
+                                <a href="{{ routes.collections_url }}">< Back to {{ collection.title | link_to: collectionUrl }}</a>
+                            {%- else -%}
+                                <a href="/collections/albutrix">< Back to Albutrix &amp; Microtrix</a>
+                            {%- endif -%}
+                        </nav>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+
+<style>
+    .collection_header_banner {
+        position: relative;
+        border-bottom: 3px solid #2f358d;
+    }
+    .collection_header_banner__content {
+    {% if product.metafields.custom.header_banner_image != blank %}
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-image: url('{{ product.metafields.custom.header_banner_image | img_url: "original" }}');
+    {% endif %}
+    }
+
+    .collection_header_banner__inset {
+    }
+    .collection_header_banner__text {
+        padding: 30px;
+        background-color: rgb(255,255,255,.3);
+        border-radius: 10px;
+    }
+    .collection_header_banner__content h1 {
+        font-family: Lexend, sans-serif;
+        font-weight: 700;
+        color: #000;
+        font-size: 44px;
+        line-height: 1.1;
+        margin-bottom: 20px;
+    }
+    .collection_banner__description {
+        font-family: Lexend, sans-serif;
+        font-weight: normal;
+        color: #000;
+        font-size: 15px;
+        line-height: 1.35;
+        margin-bottom: 10px;
+    }
+    .collection_banner__description > p {
+        margin-bottom: 7px;
+    }
+    .flex-wrap {
+        display: flex;
+        align-items: center;
+        padding-top: 15px;
+        padding-bottom: 15px;
+    }
+    .collection_header_banner__content .grid__item {
+        margin-bottom: 0 !important;
+    }
+
+</style>
+
+
+{% section 'product-section-albutrix25' %}
+
+<div class="pdp-desc-head">
+    <h2 class="pdp-h2 text-center mb-0">We Do the Work So You Can Be Successful at Home</h2>
+</div>
+
+{% section 'text-and-image-banner' %}
+
+
+<div class="row-full blue">
+    <div class="page-width">
+        <div class="compare-guidance-group outline-rounded p-5 mb-5">
+            <div class="compare-group mb-5">
+
+                <div class="compare-head">
+                    <h2 class="pdp-h2 text-center mb-4">Compare Albutrix to Other Protein Sources Designed for Kidney Patients</h2>
+                </div>
+
+                <table class="compare-table" style="color: inherit;">
+                    <tbody>
+                    <tr>
+                        <th></th>
+                        <th style="text-align: center;">{{ product.metafields.custom.short_title }}</th>
+                        <th style="text-align: center;">Other Protein Source<br>for Kidney Patients</th>
+                    </tr>
+
+                    <tr>
+                        <td><p>Guaranteed to the the lowest in nitrogen content</p></td>
+                        <td>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M17.082 1L7.91797 13.4272L2.5 7.85848L0 10.4299L8.33203 19L20 3.57143L17.082 1Z" fill="#0A7C3E"></path>
+                            </svg>
+                        </td>
+                        <td>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M20 3.71415L17.2859 1L10.5 7.78585L3.71415 1L1 3.71415L7.78585 10.5L1 17.2859L3.71415 20L10.5 13.2141L17.2859 20L20 17.2859L13.2141 10.5L20 3.71415Z" fill="#EB5757"></path>
+                            </svg>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td><p>Guaranteed to contain the highest magnesium</p></td>
+                        <td>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M17.082 1L7.91797 13.4272L2.5 7.85848L0 10.4299L8.33203 19L20 3.57143L17.082 1Z" fill="#0A7C3E"></path>
+                            </svg>
+                        </td>
+                        <td>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M20 3.71415L17.2859 1L10.5 7.78585L3.71415 1L1 3.71415L7.78585 10.5L1 17.2859L3.71415 20L10.5 13.2141L17.2859 20L20 17.2859L13.2141 10.5L20 3.71415Z" fill="#EB5757"></path>
+                            </svg>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td><p>Guaranteed to have the lowest calcium content</p></td>
+                        <td>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M17.082 1L7.91797 13.4272L2.5 7.85848L0 10.4299L8.33203 19L20 3.57143L17.082 1Z" fill="#0A7C3E"></path>
+                            </svg>
+                        </td>
+                        <td>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M20 3.71415L17.2859 1L10.5 7.78585L3.71415 1L1 3.71415L7.78585 10.5L1 17.2859L3.71415 20L10.5 13.2141L17.2859 20L20 17.2859L13.2141 10.5L20 3.71415Z" fill="#EB5757"></path>
+                            </svg>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td><p>Integrated with dietary intake to achieve RDA's each essential amino acid</p></td>
+                        <td>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M17.082 1L7.91797 13.4272L2.5 7.85848L0 10.4299L8.33203 19L20 3.57143L17.082 1Z" fill="#0A7C3E"></path>
+                            </svg>
+                        </td>
+                        <td>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M20 3.71415L17.2859 1L10.5 7.78585L3.71415 1L1 3.71415L7.78585 10.5L1 17.2859L3.71415 20L10.5 13.2141L17.2859 20L20 17.2859L13.2141 10.5L20 3.71415Z" fill="#EB5757"></path>
+                            </svg>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td><p>Allows less restrictive diet due to lower nitrogen content</p></td>
+                        <td>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M17.082 1L7.91797 13.4272L2.5 7.85848L0 10.4299L8.33203 19L20 3.57143L17.082 1Z" fill="#0A7C3E"></path>
+                            </svg>
+                        </td>
+                        <td>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M20 3.71415L17.2859 1L10.5 7.78585L3.71415 1L1 3.71415L7.78585 10.5L1 17.2859L3.71415 20L10.5 13.2141L17.2859 20L20 17.2859L13.2141 10.5L20 3.71415Z" fill="#EB5757"></path>
+                            </svg>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td><p>Complies with guidance to reduce or eliminate supplemental calcium intake</p></td>
+                        <td>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M17.082 1L7.91797 13.4272L2.5 7.85848L0 10.4299L8.33203 19L20 3.57143L17.082 1Z" fill="#0A7C3E"></path>
+                            </svg>
+                        </td>
+                        <td>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M20 3.71415L17.2859 1L10.5 7.78585L3.71415 1L1 3.71415L7.78585 10.5L1 17.2859L3.71415 20L10.5 13.2141L17.2859 20L20 17.2859L13.2141 10.5L20 3.71415Z" fill="#EB5757"></path>
+                            </svg>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td><p>Money back guarantee</p></td>
+                        <td>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M17.082 1L7.91797 13.4272L2.5 7.85848L0 10.4299L8.33203 19L20 3.57143L17.082 1Z" fill="#0A7C3E"></path>
+                            </svg>
+                        </td>
+                        <td>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M20 3.71415L17.2859 1L10.5 7.78585L3.71415 1L1 3.71415L7.78585 10.5L1 17.2859L3.71415 20L10.5 13.2141L17.2859 20L20 17.2859L13.2141 10.5L20 3.71415Z" fill="#EB5757"></path>
+                            </svg>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td><p>Free email and phone support</p></td>
+                        <td>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M17.082 1L7.91797 13.4272L2.5 7.85848L0 10.4299L8.33203 19L20 3.57143L17.082 1Z" fill="#0A7C3E"></path>
+                            </svg>
+                        </td>
+                        <td>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M20 3.71415L17.2859 1L10.5 7.78585L3.71415 1L1 3.71415L7.78585 10.5L1 17.2859L3.71415 20L10.5 13.2141L17.2859 20L20 17.2859L13.2141 10.5L20 3.71415Z" fill="#EB5757"></path>
+                            </svg>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td><p>Part of a clinically proven dietary approach to kidney disease management</p></td>
+                        <td>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M17.082 1L7.91797 13.4272L2.5 7.85848L0 10.4299L8.33203 19L20 3.57143L17.082 1Z" fill="#0A7C3E"></path>
+                            </svg>
+                        </td>
+                        <td>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M20 3.71415L17.2859 1L10.5 7.78585L3.71415 1L1 3.71415L7.78585 10.5L1 17.2859L3.71415 20L10.5 13.2141L17.2859 20L20 17.2859L13.2141 10.5L20 3.71415Z" fill="#EB5757"></path>
+                            </svg>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td><p>Free multivitamin provided with every Albutrix purchase</p></td>
+                        <td>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M17.082 1L7.91797 13.4272L2.5 7.85848L0 10.4299L8.33203 19L20 3.57143L17.082 1Z" fill="#0A7C3E"></path>
+                            </svg>
+                        </td>
+                        <td>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M20 3.71415L17.2859 1L10.5 7.78585L3.71415 1L1 3.71415L7.78585 10.5L1 17.2859L3.71415 20L10.5 13.2141L17.2859 20L20 17.2859L13.2141 10.5L20 3.71415Z" fill="#EB5757"></path>
+                            </svg>
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="guidance-group">
+                <div class="guidance-head">
+                    <h2 class="pdp-h2 text-center">Follows Latest Guidance and Recommendations</h2>
+                </div>
+                <div class="guidance-content">
+                    <p>The Kidneyhood.org approach of a very low protein diet with a protein supplemented from a keto acid analog, like Albutrix, follows the current recommendations from:</p>
+
+                    <ul class="list-style-none hang-bullets">
+                        <li><span><i class="fa fa-solid fa-angle-right"></i></span> 2020 Kidney Disease Initiative Quality Outcomes (KDOQI), a joint recommendation from the National Kidney Foundation (NKF) and the Academy of Nutrition and Dietetics</li>
+                        <li><span><i class="fa fa-solid fa-angle-right"></i></span> 2024 Kidney Disease improving Global outcomes (KDIGO) update on best practices for kidney disease patients.</li>
+                        <li><span><i class="fa fa-solid fa-angle-right"></i></span> The integrated combination of the Kidneyhood.org very low protein diet, Albutrix and Microtrix was proven effective in clinical studies</li>
+                        <li><span><i class="fa fa-solid fa-angle-right"></i></span> When you use our books and products, you have the confidence that are also following current guidance* from the largest, most reputable kidney related organizations and using a clinically proven approach.</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div id="albutrix25_bottom_content">
+    <div class="page-width">
+        <div class="grid">
+            <div class="grid__item">
+
+                {% section 'text-columns-bot' %}
+
+                {% section 'guarantee-content' %}
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% section 'research-content' %}
+
+<style>
+    #albutrix25_bottom_content {
+        background-color: #bce3f1;
+        border-top: 2px solid #96b8c4;
+        border-bottom: 2px solid #96b8c4;
+        padding: 20px;
+    }
+
+    .compare-table td, .compare-table th {
+        text-align: center;
+        border-color: #d2d2d2 !important;
+    }
+    .compare-table td:first-child {
+        text-align: left;
+    }
+
+</style>
+
+
+<script type="text/javascript">
+    var _learnq = _learnq || [];
+
+    var item = {
+        Name: {{ product.title|json }},
+        ProductID: {{ product.id|json }},
+        Categories: {{ product.collections|map:'title'|json }},
+        ImageURL: "https:{{ product.featured_image.src|img_url:'grande' }}",
+        URL: "{{ shop.secure_url }}{{ product.url }}",
+        Brand: {{ product.vendor|json }},
+        Price: {{ product.price|money|json }},
+        CompareAtPrice: {{ product.compare_at_price_max|money|json }}
+    };
+
+    _learnq.push(['track', 'Viewed Product', item]);
+    _learnq.push(['trackViewedItem', {
+        Title: item.Name,
+        ItemId: item.ProductID,
+        Categories: item.Categories,
+        ImageUrl: item.ImageURL,
+        Url: item.URL,
+        Metadata: {
+            Brand: item.Brand,
+            Price: item.Price,
+            CompareAtPrice: item.CompareAtPrice
+        }
+    }]);
+</script>
